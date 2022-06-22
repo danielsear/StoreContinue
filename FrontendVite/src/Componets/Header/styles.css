@@ -1,0 +1,121 @@
+#header_container{
+ 
+  background: #F8EEDB;
+  color: #202020;
+
+  display: flex;
+  align-items: center;
+
+  height: 7rem;
+  
+}
+
+.logo{
+  width: 30%;
+  font-family: 'Lobster', cursive;
+  font-size:2.5rem ;
+  margin-left: 1rem;
+  
+}
+.pesquisa{
+  width: 45%;
+}
+
+.user_menu{
+  width: 25%;
+  height: 15vh;
+}
+
+.user_menu a{
+  display: flex;
+
+  align-items: center;
+  margin: .5rem;
+
+  text-decoration: none;
+  color: #202020;
+
+  font-family: 'Roboto', sans-serif;
+
+  transition: .2s;
+}
+
+.user_menu a:hover{
+  color: #e6b967;
+  text-decoration: underline;
+} 
+
+.user_menu i {
+  margin-right: .5rem;
+}
+.image_user{
+  width: 3.5rem;
+  height: 3.5rem;
+
+  border-radius: 50%;
+}
+.show_user_info{
+  display: flex;
+}
+.user_info{
+  display: flex; 
+}
+
+.user_info_info{
+  display: flex;
+  flex-direction: column;
+  margin-right: 1rem;
+}
+.user_info_info span{
+ margin-top: .5rem;
+ margin-bottom: .5rem;
+}
+.user_info_img{
+  display: flex;
+  flex-direction: column;
+  margin-right: .75rem;
+}
+.user_info_img img{
+  width: 5rem;
+  height: 5rem;
+  border-radius: 50%;
+}
+.menu_go_out{
+  display: flex;
+  cursor: pointer;
+}
+.menu_go_out strong{
+ text-decoration: underline;
+}
+.search{
+  display: flex;
+  margin-top: 1rem;
+}
+
+.search input{
+    width: 70%;
+    border-radius: 1.5rem 0 0 1.5rem;
+    border: 0;
+    padding: .75rem;
+
+    background: #fff;
+}
+
+.search button{
+  width: 15%;
+  border-radius: 0 1.5rem 1.5rem 0;
+  border: 0;
+
+  cursor: pointer;
+
+  background: #fff
+}
+.search button:hover{
+    background: #f7e2bd;
+}
+
+
+
+
+
+
