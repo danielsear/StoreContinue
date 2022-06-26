@@ -43,7 +43,7 @@ function FormLogin() {
       <div className="form_header">Kassinha Variedades</div>
       {meassage && <h2 className="message_error">{meassage}</h2>}
       <h2>Login:</h2>
-      <form className="form_Cadastro" onSubmit={LoggingInUser}>
+      <form className="form_Cadastro_loggin" onSubmit={LoggingInUser}>
         <div>
           <label htmlFor="name">Nome:</label>
           <input

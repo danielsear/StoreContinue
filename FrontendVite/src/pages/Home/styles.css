@@ -1,4 +1,8 @@
-
+.home-show-product-container{
+  padding: 2rem;
+  display: flex;
+  flex-wrap: wrap;
+}
 
 .menu_none{
   margin: 2rem;
@@ -6,3 +10,4 @@
   width: 90%;
   height: 15rem;
 }
+

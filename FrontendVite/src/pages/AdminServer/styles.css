@@ -1,0 +1,52 @@
+.menu_none{
+
+  width: 90%;
+  height: 4rem;
+}
+.show-product-container{
+  padding: 2rem;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.admin-register-product{
+  margin: 1rem 1rem;
+}
+
+.admin-register-product button{
+  border: 1px solid #202020;
+  padding: 1rem;
+  color: #202020;
+  background: #fff;
+  transition: 1s;
+}
+.admin-register-product button:hover{
+  border: none;
+  background: #202020;
+  color: #fff;
+}
+
+.admin-remove-register-product{
+  display: none;
+}
+
+.admin-cancel-register-product button{
+  border: 1px solid #202020;
+  padding: 1rem;
+  color:  rgb(199, 71, 71);
+  background: #fff;
+  transition: 1s;
+}
+.admin-cancel-register-product button:hover{
+  border: none;
+  color: #fff;
+  background: rgb(199, 71, 71);
+}
+
+.admin-show-form-card{
+  display: block;
+  margin-left: 2rem;
+}
+.admin-remove-form-card{
+  display: none;
+}

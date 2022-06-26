@@ -30,7 +30,13 @@ routes.get('/image/:id', async (req, res) => {
   return res.json(user)
 })
 
+routes.get('/delete-image/:name', async (req, res) => {
+  const img = await Image.findOne({ name:req.params.name})
 
+  await img.remove()
+
+  return res.json('Imagem deletada com sucesso.')
+})
 
 //USERS
 
@@ -65,16 +71,56 @@ routes.get('/products', async (req, res) => {
   return res.json(products)
 })
 
-routes.post('/product', async (req, res) => {
-  const { title, spotPrice, forwardPrice, Idphoto } = req.body
+routes.post('/product-create', async (req, res) => {
+  const { title, spotPrice, forwardPrice, productId, namePhoto,pricePrevious,frete } = req.body
+
+  if(req.body){
 
   const product = await Product.create({
     title,
     spotPrice,
+    frete,
     forwardPrice,
-    Idphoto
+    namePhoto,
+    pricePrevious,
+    productId
   })
-  return res.json(product)
+  return res.json({
+    error: false,
+    message: 'Produto criado com sucesso.'
+  })
+}
+return res.status(400).json({
+  error: true,
+  message: 'Error: Produto não criado com sucesso.'
+})
+
+})
+
+routes.post('/product-update', async (req, res) => {
+  const { title, spotPrice, forwardPrice, productId, namePhoto,pricePrevious,frete } = req.body
+
+  if(req.body){
+
+  const product = await Product.updateOne({productId},{
+    title,
+    spotPrice,
+    frete,
+    forwardPrice,
+    namePhoto,
+    pricePrevious,
+    productId
+  })
+  return res.json({
+    error: false,
+    message: 'Produto editado com sucesso.'
+  })
+}
+return res.status(400).json({
+  error: true,
+  message: 'Error: Produto não criado com sucesso.'
+})
+
 })
 
 routes.get('/product/:id', async (req, res) => {
@@ -83,9 +129,9 @@ routes.get('/product/:id', async (req, res) => {
   return res.json(product)
 })
 
-routes.post('/product/:id', async (req, res) => {
-  const product = await Product.findById(req.params.id)
-
+routes.post('/delete-product/:id', async (req, res) => {
+  const product = await Product.findOne({productId: req.params.id})
+ 
   await product.remove()
 
   return res.json('Produto deletado com sucesso.')

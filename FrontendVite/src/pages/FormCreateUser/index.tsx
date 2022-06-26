@@ -44,8 +44,6 @@ function FormCreateUser() {
         console.log(res);
       })
       .catch(err => console.error(err))
-  
-      
     }
    
    

@@ -4,7 +4,9 @@ import Search from '../../assets/images/search_icon.svg'
 import userMenu from '../../assets/images/user-enter1.svg'
 
 import { useEffect, useState } from 'react'
-import { FindImage, FindUsers, User } from '../../services/User'
+import {  FindUsers, User } from '../../services/User'
+import { FindImage, DataImageType } from '../../services/Images'
+
 import { useNavigate } from 'react-router-dom'
 
 type HeaderProps = {
@@ -13,14 +15,7 @@ type HeaderProps = {
 
 type arrayUsers = User[]
 
-type DataImageType = 	{
-  id: string,
-  name: string,
-  size: number,
-  key: string,
-  url: string,
-  createAt: string,
-}
+
 type arrayDataImageType = DataImageType[]
 
 function Header({ userId }: HeaderProps) {

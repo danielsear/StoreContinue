@@ -24,11 +24,11 @@
   height: 7rem;
 }
 
-.form_Cadastro{
+.form_Cadastro_loggin{
   width: 40%;
 }
 
-.form_Cadastro div{
+.form_Cadastro_loggin div{
   width: 100%;
   display: flex;
  
@@ -37,7 +37,7 @@
   flex-direction: column;
 }
 
-.form_Cadastro div input{
+.form_Cadastro_loggin div input{
   margin-top: .5rem;
 
   border-top: none;
@@ -48,7 +48,7 @@
   color: #202020;
 }
 
-.form_Cadastro button {
+.form_Cadastro_loggin button {
   margin-top: 1rem;
 
   font-size: 1rem;
@@ -63,7 +63,7 @@
   transition: .2s;
 }
 
-.form_Cadastro button:hover{
+.form_Cadastro_loggin button:hover{
   transform: translateX(.1rem) translateY(.1rem);
 }
 

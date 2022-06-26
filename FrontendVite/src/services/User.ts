@@ -8,19 +8,7 @@ export type User = {
   file?: string
 }
 
-async function FindImage() {
-  return await fetch('http://localhost:3333/images', {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  })
-    .then(res => res.json())
-    .then(data => {
-      return data
-    })
-    .catch(err => console.error(err))
-}
+
 
 async function CreateUser(user: User) {
   const { userId, name, email, password, admin, file } = user
@@ -50,18 +38,6 @@ async function FindUsers() {
     .catch(err => console.error(err))
 }
 
-async function FindOneUsers(userId: string) {
-  return await fetch(`http://localhost:3333/${userId}`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  })
-    .then(res => res.json())
-    .then(data => {
-      return data
-    })
-    .catch(err => console.error(err))
-}
 
-export { CreateUser, FindUsers, FindOneUsers,FindImage }
+
+export { CreateUser, FindUsers }
