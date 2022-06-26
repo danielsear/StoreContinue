@@ -8,6 +8,7 @@ import userDefault from '../../assets/images/user-enter1.svg'
 import { ChangeEvent, FormEvent, useState } from 'react'
 
 import { CreateUser } from '../../services/User'
+import { FindImage, RegisterImage } from '../../services/Images'
 
 function FormCreateUser() {
   const navegate = useNavigate()
@@ -36,6 +37,10 @@ function FormCreateUser() {
     if(image){
      formData.append('file', image)
 
+     const respImage = await RegisterImage(formData)
+     console.log(respImage);
+    } 
+    /*
      await fetch('http://localhost:3333/image', {
       method: 'POST',
       body: formData
@@ -45,6 +50,7 @@ function FormCreateUser() {
       })
       .catch(err => console.error(err))
     }
+    */
    
    
      if (user) {

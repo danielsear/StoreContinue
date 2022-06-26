@@ -13,14 +13,14 @@ export type ProductsType = {
 }
 
 async function FindProducts() {
-  await fetch('http://localhost:3333/products',{
+ return await fetch('http://localhost:3333/products',{
     method: 'GET',
     headers:{
-      'Content-Type': 'application/json'
+      'Content-Type' : 'application/json'
     }
   }).then(res => res.json())
   .then(data =>{
-    return data
+   return data
   })
   .catch(err => console.error(err))
 }
@@ -28,7 +28,7 @@ async function FindProducts() {
 async function CreateProduct(data: ProductsType) {
   const { title, spotPrice, forwardPrice, productId, namePhoto,pricePrevious,frete } = data
 
-  await fetch('http://localhost:3333/product-create', {
+ return await fetch('http://localhost:3333/product-create', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -42,7 +42,7 @@ async function CreateProduct(data: ProductsType) {
 async function UpdateProduct(data: ProductsType) {
   const { title, spotPrice, forwardPrice, productId, namePhoto,pricePrevious,frete }  = data
 
-  await fetch('http://localhost:3333/product-update', {
+ return await fetch('http://localhost:3333/product-update', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -54,7 +54,7 @@ async function UpdateProduct(data: ProductsType) {
 }
 
 async function DeleteProduct(productId:string) {
-    await fetch(`http://localhost:3333/delete-product/${productId}`,{
+   return await fetch(`http://localhost:3333/delete-product/${productId}`,{
       method: 'POST',
       headers:{
         'Content-Type': 'application/json'

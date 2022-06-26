@@ -23,7 +23,7 @@ async function FindImage() {
 
 async function RegisterImage(formData: FormData) {
   
-await fetch('http://localhost:3333/image', {
+return await fetch('http://localhost:3333/image', {
   method: 'POST',
   body: formData
 })
@@ -34,7 +34,7 @@ await fetch('http://localhost:3333/image', {
 }
 
 async function DeleteImage(name:string) {
-  await fetch(`http://localhost:3333/delete-product/${name}`,{
+  return await fetch(`http://localhost:3333/delete-product/${name}`,{
       method: 'GET',
       headers:{
         'Content-Type': 'application/json'

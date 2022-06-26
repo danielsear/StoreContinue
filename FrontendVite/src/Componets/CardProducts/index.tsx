@@ -31,6 +31,7 @@ function CardProducts({
   async function ShowImage(){
     const arrayImg : arrayImage = await FindImage()
     const img = arrayImg.find(img => img.name === namePhoto)
+  
     setImg(img)
   }
 

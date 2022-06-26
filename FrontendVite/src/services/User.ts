@@ -13,7 +13,7 @@ export type User = {
 async function CreateUser(user: User) {
   const { userId, name, email, password, admin, file } = user
 
-  await fetch('http://localhost:3333/user', {
+ return await fetch('http://localhost:3333/user', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -25,10 +25,10 @@ async function CreateUser(user: User) {
 }
 
 async function FindUsers() {
-  return await fetch('http://localhost:3333/users', {
-    method: 'GET',
+  return await fetch("http://localhost:3333/users", {
+    method: "GET",
     headers: {
-      'Content-Type': 'application/json'
+      "Content-Type": "application/json"
     }
   })
     .then(res => res.json())
