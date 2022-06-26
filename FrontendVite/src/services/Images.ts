@@ -34,7 +34,7 @@ return await fetch('http://localhost:3333/image', {
 }
 
 async function DeleteImage(name:string) {
-  return await fetch(`http://localhost:3333/delete-product/${name}`,{
+  return await fetch(`http://localhost:3333/delete-image/${name}`,{
       method: 'GET',
       headers:{
         'Content-Type': 'application/json'

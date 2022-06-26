@@ -32,7 +32,7 @@ routes.get('/image/:id', async (req, res) => {
 
 routes.get('/delete-image/:name', async (req, res) => {
   const img = await Image.findOne({ name:req.params.name})
-
+ 
   await img.remove()
 
   return res.json('Imagem deletada com sucesso.')

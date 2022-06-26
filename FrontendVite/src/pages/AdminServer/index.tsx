@@ -30,11 +30,21 @@ function AdminServer(){
     fildFormCardButtonRegister?.classList.add('admin-remove-register-product')
   }
 
+  const ativeReload= () => {
+    setTimeout(() => {
+      setReload(prev => !prev)
+      const removeFildFormCardButtonRegister = document.querySelector('.admin-show-form-card')
+      removeFildFormCardButtonRegister?.classList.remove('admin-show-form-card')
+      removeFildFormCardButtonRegister?.classList.add('admin-remove-register-product')
+    }, 3000);
+  }
 
   useEffect(()=>{
     ShowProducts()
   },[reload])
 
+  console.log(reload);
+  
 
   return (
     <>
@@ -63,7 +73,7 @@ function AdminServer(){
         </div>
       )}
       <div className='admin-remove-form-card'>
-        <FormCard handleOnload={()=> setReload(prev => !prev)}/>
+        <FormCard ativeReload={ativeReload}/>
       </div>
       </div>
       <Footer/>

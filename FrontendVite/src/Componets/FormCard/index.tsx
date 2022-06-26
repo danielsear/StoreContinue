@@ -10,10 +10,10 @@ import { useNavigate } from 'react-router'
 
 type arrayProducts = ProductsType[]
 type formcardType = {
-  handleOnload: () => void,
+  ativeReload: () => void,
 }
 
-function FormCard(handleOnload : formcardType){
+function FormCard({ativeReload} : formcardType){
   const [message, setMessage] = useState('')
   const navigate = useNavigate()
   const [img, setImg] = useState<File>()
@@ -57,6 +57,7 @@ function FormCard(handleOnload : formcardType){
     }
 
   }
+
 
 
   return (
@@ -111,7 +112,7 @@ function FormCard(handleOnload : formcardType){
          <input type="text" name='forwardPrice'onChange={handleProduct}/>
         </div>
         <div className='form-card-button'>
-         <button type='submit' onClick={()=> handleOnload}>Criar Produto</button>
+         <button type='submit' onClick={ativeReload} >Criar Produto</button>
         </div>
      </div>
     </form>
