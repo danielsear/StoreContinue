@@ -41,9 +41,35 @@ routes.get('/delete-image/:name', async (req, res) => {
 //USERS
 
 routes.post('/user', async (req, res) => {
-  const { name, key, email, password, admin, userId, file } = req.body
-  const user = await User.create({ name, key, email, password, admin, userId,file })
+  const { name, key, email, password, admin, userId, file,likeProducts} = req.body
+  const user = await User.create({ name, key, email, password, admin, userId,file,likeProducts })
   return res.json(user)
+})
+
+routes.post('/user-update', async (req, res) => {
+  const { userId, name, email, password, admin, file, likeProducts} = req.body
+
+  if(req.body){
+
+  const user = await User.updateOne({userId},{
+     userId,
+      name, 
+      email,
+       password,
+        admin, 
+        file, 
+        likeProducts
+  })
+  return res.json({
+    error: false,
+    message: 'Usuário editado com sucesso.'
+  })
+}
+return res.status(400).json({
+  error: true,
+  message: 'Error: Usuário não criado com sucesso.'
+})
+
 })
 
 routes.get('/users', async (req, res) => {

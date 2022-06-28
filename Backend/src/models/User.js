@@ -8,6 +8,7 @@ const UserSchema = new mongoose.Schema({
   password: String,
   admin: Boolean,
   file: String,
+  likeProducts: Array,
   createAt: {
     type: Date,
     default: Date.now
