@@ -8,10 +8,14 @@ import FormCardEdit from '../FormCardEdit'
 
 import editProduct from '../../assets/images/edit.svg'
 import deleteProduct from '../../assets/images/delete-product.svg'
+import like from '../../assets/images/like.svg'
+import { FindUsers , UpdateUser, User} from '../../services/User'
+
 
 
 type arrayImage = DataImageType[]
 
+type arrayUsers = User[]
 
 function CardProducts({
   forwardPrice,
@@ -21,7 +25,8 @@ function CardProducts({
   pricePrevious,
   frete, 
   productId,
-  admin
+  admin,
+  userLogged
 } : ProductsType){
   const [img, setImg] = useState<DataImageType>()
   const [editFildProduct, setEditFildProduct] = useState(true)
@@ -46,6 +51,19 @@ function CardProducts({
     }
   }
 
+
+  async function handleMarkLike(){
+    const infoUsersLogged : arrayUsers = await FindUsers()
+    const infoUserLogged = infoUsersLogged.find(user => user.userId === userLogged)
+    infoUserLogged?.likeProducts?.push(title)
+    
+    if(infoUserLogged){
+      const updateUserProductlike = await UpdateUser(infoUserLogged)
+      console.log(updateUserProductlike);
+      
+    }
+    
+  }
  
 
   useEffect(()=>{
@@ -64,6 +82,11 @@ function CardProducts({
               {title}
             </div>
             <div className='card-description-options'>
+              {userLogged && (
+                <div className='card-description-options-like'>
+                  <img id='likeImage' src={like} alt={like} onClick={handleMarkLike}/>
+                </div>
+              )}
              {admin && (
               <>
                 <div className='editProduct'>

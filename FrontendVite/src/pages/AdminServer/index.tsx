@@ -35,7 +35,11 @@ function AdminServer(){
       setReload(prev => !prev)
       const removeFildFormCardButtonRegister = document.querySelector('.admin-show-form-card')
       removeFildFormCardButtonRegister?.classList.remove('admin-show-form-card')
-      removeFildFormCardButtonRegister?.classList.add('admin-remove-register-product')
+      removeFildFormCardButtonRegister?.classList.add('admin-remove-form-card')
+
+      const fildFormCardButtonRegister = document.querySelector('.admin-remove-register-product')
+      fildFormCardButtonRegister?.classList.remove('admin-remove-register-product')
+      fildFormCardButtonRegister?.classList.add('admin-register-product')
     }, 3000);
   }
 

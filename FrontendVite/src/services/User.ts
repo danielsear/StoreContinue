@@ -5,20 +5,21 @@ export type User = {
   email: string
   password: string
   admin?: boolean
-  file?: string
+  file?: string,
+  likeProducts?: Array<string>
 }
 
 
 
 async function CreateUser(user: User) {
-  const { userId, name, email, password, admin, file } = user
+  const { userId, name, email, password, admin, file, likeProducts} = user
 
  return await fetch('http://localhost:3333/user', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({ userId, name, email, password, admin, file })
+    body: JSON.stringify({ userId, name, email, password, admin, file, likeProducts })
   })
     .then()
     .catch(err => console.error(err))
@@ -38,6 +39,22 @@ async function FindUsers() {
     .catch(err => console.error(err))
 }
 
+async function UpdateUser(data: User) {
+  const { userId, name, email, password, admin, file, likeProducts}  = data
+
+ return await fetch('http://localhost:3333/user-update', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ userId, name, email, password, admin, file, likeProducts} )
+  })
+    .then(res => res.json())
+    .then(data => {
+      return data
+    })
+    .catch(err => console.error(err))
+}
 
 
-export { CreateUser, FindUsers }
+export { CreateUser, FindUsers, UpdateUser }

@@ -42,6 +42,7 @@ function Home() {
           pricePrevious= {product.pricePrevious}
           key={product.productId}
           productId={product.productId}
+          userLogged={userId}
           />)
       ) : (
         <div className="menu_none">

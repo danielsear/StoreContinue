@@ -9,7 +9,8 @@ export type ProductsType = {
   forwardPrice: string,
   pricePrevious: string,
   productId?: string,
-  admin?: boolean
+  admin?: boolean,
+  userLogged?: string
 }
 
 async function FindProducts() {

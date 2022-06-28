@@ -72,6 +72,9 @@
   justify-content: space-between;
   align-items: center;
 }
+.card-description-options-like-red{
+background-color: red;
+}
 .card-description-options img{
   height: 1.5rem;
   padding: .125rem;
@@ -83,3 +86,4 @@
 .deleteProduct:hover{
   background: #333;
 }
+
