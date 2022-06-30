@@ -15,6 +15,19 @@ import { FindUsers , UpdateUser, User} from '../../services/User'
 
 type arrayImage = DataImageType[]
 
+type UserProduct = {
+  title: string,
+  frete?:string,
+  spotPrice:string,
+  namePhoto?: string,
+  forwardPrice: string,
+  pricePrevious: string,
+  productId?: string,
+  admin?: boolean,
+  userLogged?: string,
+  addProduct?: () => void
+}
+
 type arrayUsers = User[]
 
 function CardProducts({
@@ -26,8 +39,9 @@ function CardProducts({
   frete, 
   productId,
   admin,
-  userLogged
-} : ProductsType){
+  userLogged,
+  addProduct
+} : UserProduct){
   const [img, setImg] = useState<DataImageType>()
   const [editFildProduct, setEditFildProduct] = useState(true)
   const [product, setProduct] = useState<ProductsType>()
@@ -53,15 +67,16 @@ function CardProducts({
 
 
   async function handleMarkLike(){
-    const infoUsersLogged : arrayUsers = await FindUsers()
-    const infoUserLogged = infoUsersLogged.find(user => user.userId === userLogged)
-    infoUserLogged?.likeProducts?.push(title)
-    
-    if(infoUserLogged){
-      const updateUserProductlike = await UpdateUser(infoUserLogged)
-      console.log(updateUserProductlike);
-      
-    }
+   // const infoUsersLogged : arrayUsers = await FindUsers()
+   // const infoUserLogged = infoUsersLogged.find(user => user.userId === userLogged)
+   // infoUserLogged?.likeProducts?.push(title)
+   // 
+   // if(infoUserLogged){
+   //   const updateUserProductlike = await UpdateUser(infoUserLogged)
+   //   console.log(updateUserProductlike);
+   // }
+   console.log('Like!');
+   
     
   }
  
@@ -105,6 +120,16 @@ function CardProducts({
           <div className='card-price-previous'>Preço anterior :  R$ {pricePrevious} reais</div>
           <div className='card-price-current'>Preço à vista :  R$ {spotPrice} reais</div>
           <div className='card-price-installment'>ou até 3x de R$ {forwardPrice} reais sem juros</div>
+          {userLogged && (
+            <div className='card-buy-products'>
+              <div>
+                <button className='card-button-add-product' onClick={addProduct}>Adicionar ao carrinho</button>
+              </div>
+              <div>
+                <button className='card-button-buy-product' >Comprar</button>
+              </div>
+            </div>
+          )}
         </div>
       ) : (
         <div className=''>

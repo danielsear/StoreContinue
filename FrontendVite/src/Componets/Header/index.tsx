@@ -30,18 +30,13 @@ function Header({ userId }: HeaderProps) {
     if (dataUser && userId) {
       const userLogged = dataUser.find(data => data.userId === userId)
       setUser(userLogged)
-    
-      console.log(userLogged);
       
       if(userLogged?.file){
         const dataImage: arrayDataImageType  = await FindImage()
 
         const imageUserLogged = dataImage.find(data => data.name === userLogged.file)
-        console.log(imageUserLogged);
         
         if(imageUserLogged){
-          console.log(imageUserLogged.url);
-          
           setImageUser(imageUserLogged.url)
         }
       }

@@ -47,9 +47,7 @@ function AdminServer(){
     ShowProducts()
   },[reload])
 
-  console.log(reload);
   
-
   return (
     <>
       <Headers/>

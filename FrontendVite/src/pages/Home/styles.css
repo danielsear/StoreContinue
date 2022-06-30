@@ -11,3 +11,22 @@
   height: 15rem;
 }
 
+.home-container{
+  display: flex;
+}
+
+.home-menu-shopping-cart{
+ width: 30%;
+
+ padding: 0.255rem;
+ font-size: 1rem;
+ background: #fff;
+ border: 1px solid rgba(77, 57, 57, 0.303);
+
+ display: flex;
+ flex-direction: column;
+}
+.home-menu-shopping-cart h1{
+  font-size: 1.5rem;
+ margin-left: 1rem;
+}

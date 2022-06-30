@@ -87,3 +87,23 @@ background-color: red;
   background: #333;
 }
 
+.card-buy-products{
+  display: flex;
+  justify-content: space-between;
+
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+.card-button-add-product{
+    padding: .255rem;
+    font-size: 1rem;
+    background: #fff;
+    border: 1px solid rgba(77, 57, 57, 0.303);
+}
+.card-button-buy-product{
+margin-left: .5rem;
+padding: .255rem;
+font-size: 1rem;
+background: #04d483;;
+border: 1px solid rgba(49, 77, 27, 0.303);
+}
