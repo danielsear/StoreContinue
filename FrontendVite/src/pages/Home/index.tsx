@@ -32,20 +32,40 @@ function Home() {
     id: ''
    }])
 
+ 
+   const [totalTermValue, setTotalTermValue] = useState(0)
+   const [totalInSightValue, setTotalInSightValue] = useState(0)
+
+   
+  
+
+
   const { userId } = useParams()
 
-  console.log(productsAddedToShoppingCart);
-
-
-  
 
   async function ShowProducts() {
     const products : arrayProducts = await FindProducts()
     setProducts(products)
   }
 
+function handleCartValue(){
+  var SomaForwardPrice = 0
+  var SomaSpotPrice= 0
 
+   productsAddedToShoppingCart.map(product =>{
+    if( product.forwardPrice && product.forwardPrice !== ''){
+      const stringToNumber = parseFloat(product.forwardPrice.replace(',', '.'))
+      SomaForwardPrice += stringToNumber
+    }
+     setTotalTermValue( SomaForwardPrice)
 
+    if( product.spotPrice && product.spotPrice !== ''){
+      const stringToNumber = parseFloat(product.spotPrice.replace(',', '.'))
+      SomaSpotPrice += stringToNumber
+    }
+    setTotalInSightValue(SomaSpotPrice)
+  })
+}
 
 
   useEffect(()=>{
@@ -74,6 +94,7 @@ function Home() {
               title : product.title,
               forwardPrice: product.forwardPrice,
               frete: product.frete,
+              spotPrice: product.spotPrice,
               id: product.productId
              }])
           }}
@@ -86,18 +107,38 @@ function Home() {
       </div>
       {productsAddedToShoppingCart.length > 1 && (
         <div className='home-menu-shopping-cart'>
-          <h1>Itens Selecionados</h1>
+          <h1>Carrinho:</h1>
           {productsAddedToShoppingCart.map(product => (
-            <div className='card-shopping-cart' key={product.id}>
-              <div>{product.title}</div>
+           <div className='card-shopping-cart' key={product.id} >
+            {product.id !== '' && (
+             <div>
+               <div><h3>{product.title}</h3></div>
               {product.frete && (
-                <div>Frete : {product.frete}</div>
+                <div className='card-frete'>Frete : R$ {product.frete}</div>
               )}
-              <div>Preço à prazo: {product.forwardPrice}</div>
-              <div>Preço à vista: {product.spotPrice}</div>
+              <div className='card-shopping-cart-value'>Preço à prazo: R$ {product.forwardPrice}</div>
+              <div className='card-shopping-cart-value'>Preço à vista: R$ {product.spotPrice}</div>
               <hr/>
-            </div>
+             </div>
+            )}
+           </div>
           ))}
+               <div className='card-shopping-cart-total-value'>
+                <div className='card-shopping-cart-total-value-button' 
+                onClick={handleCartValue}>
+                  Fechar container
+                </div>
+               {(totalTermValue !== 0 || totalInSightValue !== 0) && (
+                <>
+                    <div className='card-shopping-cart-value'>
+                     Total à vista: R$ {totalTermValue}
+                    </div>
+                    <div className='card-shopping-cart-value'>
+                      Total à prazo: R$ {totalInSightValue}
+                    </div>
+                </>
+               )}
+           </div>
         </div>
       )}
       </div>

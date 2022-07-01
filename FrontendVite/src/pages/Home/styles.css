@@ -30,3 +30,22 @@
   font-size: 1.5rem;
  margin-left: 1rem;
 }
+
+.card-shopping-cart-value{
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.card-shopping-cart-total-value-button{
+  display: flex;
+  justify-content: center;
+
+  margin: 1rem 0;
+  padding: 0.255rem;
+  font-size: 1rem;
+   background: #04d483;
+  border: 1px solid rgba(77, 57, 57, 0.303);
+
+  cursor: pointer;
+
+}
