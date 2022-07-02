@@ -3,11 +3,17 @@ import './styles.css'
 import { useState , useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 
+import { v4 } from 'uuid'
+
 import Footer from '../../Componets/Footer'
 import Header from '../../Componets/Header'
 import CardProducts from '../../Componets/CardProducts'
 
 import { FindProducts, ProductsType } from '../../services/Products'
+import {  RegisterImage } from '../../services/Images'
+
+import { CreateCustomerOrders,DataPaymentType} from '../../services/CustomerOrders'
+
 
 
 type arrayProducts = ProductsType[]
@@ -19,6 +25,8 @@ type ProductsShoppingCartType = {
   forwardPrice?: string,
   id?: string
 }
+
+
 
 type arrayProductsShoppingCartType = ProductsShoppingCartType[]
 
@@ -36,6 +44,12 @@ function Home() {
    const [totalTermValue, setTotalTermValue] = useState(0)
    const [totalInSightValue, setTotalInSightValue] = useState(0)
    const [finalizingThePurchase, setFinalizingThePurchase] = useState(false)
+   const [pixPayment, setPixPayment] = useState(false)
+   const [imgPaymentPix, setImgPaymentPix] = useState<File>()
+   const [message, setMessage] = useState<DataPaymentType>()
+   const [refreshingPage, setRefreshingPage] = useState(false)
+
+
 
 
   async function ShowProducts() {
@@ -43,7 +57,7 @@ function Home() {
     setProducts(products)
   }
 
-function handleCartValue(){
+  function handleCartValue(){
   var SomaForwardPrice = 0
   var SomaSpotPrice= 0
 
@@ -68,12 +82,57 @@ function handleCartValue(){
     }
     setTotalInSightValue(SomaSpotPrice)
   })
-}
+  }
+
+  function handleRefreshingPage(){
+    setFinalizingThePurchase(false)
+          setPixPayment(false)
+          setProductsAddedToShoppingCart([{
+            forwardPrice: '',
+            spotPrice: '',
+            title: '',
+            id: ''
+           }])
+           setMessage({
+            error: true,
+            message: ''
+           })
+           setRefreshingPage(true)
+  }
+
+  async function handlePixPayment() {
+
+    const paymentId = v4()
+    const nameProducts = productsAddedToShoppingCart.map(product => product.title)
+
+    const formData = new FormData()
+    if(imgPaymentPix){
+      formData.append('file', imgPaymentPix)
+      
+      const imgdata = await RegisterImage(formData)
+
+      if(userId){
+        const dataPayment  = await CreateCustomerOrders({
+          nameProducts: nameProducts,
+          paymentId : paymentId,
+          pormOfPayment: 'PIX',
+          proofOfPaymentPhoto: imgPaymentPix.name,
+          userId: userId
+        })
+        setMessage(dataPayment)
+        setTimeout(() => {
+          handleRefreshingPage()
+        }, 3000);
+      }
+    }
+  
+    
+  }
 
 
   useEffect(()=>{
     ShowProducts()
-  },[])
+  },[refreshingPage])
 
   return (
     <>
@@ -116,13 +175,56 @@ function handleCartValue(){
               a sua escolha, a forma de pagamento:
             </p>           
             <p><strong>1-</strong> Você poderá escolher pagar via Pix com o código da loja NUMERO-PIX-DA-LOJA.</p>
-              <div className='card-shopping-cart-close-value-button finalizingThePurchase'>
-                     Pagamento via PIX
-              </div>
-            <p><strong>2-</strong> Você poderá escolher pagar na loja pessoalmente.</p> 
-              <div className='card-shopping-cart-close-value-button finalizingThePurchase'>
-                     Pagamento na loja
-              </div> 
+             {!pixPayment ? (
+               <div className='card-shopping-cart-close-value-button finalizingThePurchase'
+               onClick={() => setPixPayment(prev => !prev)}
+             >
+                    Pagamento via PIX
+             </div>
+             ):(
+                <div className='card-shopping-cart-close-value-payment-pix'>
+                  <p><strong>a)</strong> Primeiramente, faça o pagamento utilizando o numero ddo pix da loja <strong>NUMERO-PIX-DA-LOJA.</strong></p>
+                  <p><strong>b)</strong> Segundo, tire um print ou foto do comprovante do pix e faça o upload(carregamento) da foto ou print na seção abaixo:</p>
+                  {imgPaymentPix && (
+                    <div className="card-shopping-cart-close-value-payment-pix-show-img">
+                      <img
+                        src={URL.createObjectURL(imgPaymentPix)}
+                        alt="Image"
+                        width="200"
+                        height="200"
+                      />
+                  </div>
+                  )}
+                  <div className='card-shopping-cart-close-value-payment-pix-img'>              
+                        <input type='file' name='file' onChange={(event)=> {
+                          const files = event.target.files
+                          if(files){
+                            const file = files[0]
+                            setImgPaymentPix(file)
+                          }
+                        }}/>
+                      </div>
+                      {imgPaymentPix && (
+                       <div className='card-shopping-cart-close-value-payment-pix-img-button'>
+                         {!message?.message ? (
+                          <button onClick={handlePixPayment} >Finalizar a compra</button>
+                         ): (
+                          <div className='card-shopping-cart-close-value-payment-pix-confirm-message'>
+                            {message.message}
+                          </div>
+                         )}
+                       </div>
+                      )}
+                </div>
+             )}
+            {!pixPayment && (
+              <>
+                <p><strong>2-</strong> Você poderá escolher pagar na loja pessoalmente.</p> 
+                <div className='card-shopping-cart-close-value-button finalizingThePurchase'>
+                      Pagamento na loja
+                </div> 
+              </>
+            )}
           </div>
         )}
 
@@ -160,7 +262,13 @@ function handleCartValue(){
                     <div className='card-shopping-cart-close-value-button' 
                     onClick={() => setFinalizingThePurchase(prev => !prev)}  >
                       Fazer pedido
-                    </div>                  
+                    </div>  
+                   {finalizingThePurchase && (
+                     <div className='card-shopping-cart-total-value-button' 
+                     onClick={handleRefreshingPage}  >
+                       Cancelar pedido
+                     </div> 
+                   )}                 
                 </>
                )}     
            </div>

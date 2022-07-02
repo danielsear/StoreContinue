@@ -77,3 +77,52 @@
 .finalizingThePurchase{
   width: 10rem;
 }
+
+.card-shopping-cart-close-value-payment-pix-show-img img{
+  border-radius: 10%;
+}
+
+.card-shopping-cart-close-value-payment-pix-img {
+  display: flex;
+  justify-content: center;
+
+  margin: 1rem 0;
+  padding: 0.355rem;
+  font-size: 1rem;
+
+  color: #000;
+   background: crimson;
+  border: 1px solid rgba(77, 57, 57, 0.303);
+
+  width: 19rem;
+
+  cursor: pointer;
+}
+.card-shopping-cart-close-value-payment-pix-img:hover{
+  color: #fff;
+  background: rgb(209, 50, 81);
+}
+
+.card-shopping-cart-close-value-payment-pix-img-button{
+  display: flex;
+  margin: 1rem 1rem;
+}
+.card-shopping-cart-close-value-payment-pix-img-button button{
+  padding: 0.5rem;
+  font-size: 1rem;
+  background-color: #04d483;
+  border: #048654;
+}
+.card-shopping-cart-close-value-payment-pix-img-button button:hover{
+  color: #fff;
+}
+
+.card-shopping-cart-close-value-payment-pix-confirm-message{
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  padding: 0.5rem;
+  font-size: 1rem;
+  background-color: #04d483;
+  border: #048654;
+}

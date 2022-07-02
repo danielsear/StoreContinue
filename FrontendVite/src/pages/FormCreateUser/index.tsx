@@ -38,7 +38,7 @@ function FormCreateUser() {
      formData.append('file', image)
 
      const respImage = await RegisterImage(formData)
-     console.log(respImage);
+     
     } 
     /*
      await fetch('http://localhost:3333/image', {
