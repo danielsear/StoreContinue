@@ -2,7 +2,7 @@
 export type CustumerOdersType = {
   nameProducts: Array<string>,
   userId: string,
-  proofOfPaymentPhoto: string,
+  proofOfPaymentPhoto?: string,
   pormOfPayment: string,
   paymentId: string,
 }

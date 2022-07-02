@@ -129,6 +129,23 @@ function Home() {
     
   }
 
+  async function handlePaymentInStore() {
+    const paymentId = v4()
+    const nameProducts = productsAddedToShoppingCart.map(product => product.title)
+
+    if(userId){
+      const dataPayment  = await CreateCustomerOrders({
+        nameProducts: nameProducts,
+        paymentId : paymentId,
+        pormOfPayment: 'Payment in store',
+        userId: userId
+      })
+      setMessage(dataPayment)
+      setTimeout(() => {
+        handleRefreshingPage()
+      }, 3000);
+    }
+  }
 
   useEffect(()=>{
     ShowProducts()
@@ -172,8 +189,12 @@ function Home() {
           <div className='home-menu-finalizingThePurchase'>
             <h2>Orientação para fechamento da compra:</h2>
             <p> Para sua segurança e da empresa Kassinha Variedades, será necessário,
-              a sua escolha, a forma de pagamento:
-            </p>           
+              a sua escolha, a forma de pagamento: 
+            </p>   
+            <p><strong>Observação:</strong> pagamento via PIX deverá ser somente debitado  valor à vista. 
+            E a liberação será feita somente após<br/> comprovação, por meio do comprovante enviado ou
+              físico demonstrado na hora da retirada no caixa.
+            </p>        
             <p><strong>1-</strong> Você poderá escolher pagar via Pix com o código da loja NUMERO-PIX-DA-LOJA.</p>
              {!pixPayment ? (
                <div className='card-shopping-cart-close-value-button finalizingThePurchase'
@@ -220,9 +241,18 @@ function Home() {
             {!pixPayment && (
               <>
                 <p><strong>2-</strong> Você poderá escolher pagar na loja pessoalmente.</p> 
-                <div className='card-shopping-cart-close-value-button finalizingThePurchase'>
+                
+                {message?.message ? (
+                   <div className='card-shopping-cart-close-value-payment-pix-confirm-message'>
+                   {message.message}
+                 </div>
+                ):(
+                  <div className='card-shopping-cart-close-value-button finalizingThePurchase'
+                  onClick={handlePaymentInStore}
+                >
                       Pagamento na loja
-                </div> 
+                </div>
+                )}
               </>
             )}
           </div>
@@ -247,10 +277,12 @@ function Home() {
            </div>
           ))}
                <div className='card-shopping-cart-total-value'>
-                <div className='card-shopping-cart-total-value-button' 
-                onClick={handleCartValue}>
-                  Calcular total
-                </div>
+                {!finalizingThePurchase && !(totalTermValue !== 0 || totalInSightValue !== 0) && (
+                  <div className='card-shopping-cart-total-value-button' 
+                  onClick={handleCartValue}>
+                    Calcular total
+                  </div>
+                )}
                {(totalTermValue !== 0 || totalInSightValue !== 0) && (
                 <>
                     <div className='card-shopping-cart-value'>
@@ -259,10 +291,12 @@ function Home() {
                     <div className='card-shopping-cart-value'>
                      Total à vista: R$ {totalInSightValue}
                     </div> 
-                    <div className='card-shopping-cart-close-value-button' 
-                    onClick={() => setFinalizingThePurchase(prev => !prev)}  >
-                      Fazer pedido
-                    </div>  
+                   {!finalizingThePurchase && (
+                     <div className='card-shopping-cart-close-value-button' 
+                     onClick={() => setFinalizingThePurchase(prev => !prev)}  >
+                       Fazer pedido
+                     </div> 
+                   )} 
                    {finalizingThePurchase && (
                      <div className='card-shopping-cart-total-value-button' 
                      onClick={handleRefreshingPage}  >
