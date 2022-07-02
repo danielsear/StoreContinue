@@ -23,6 +23,7 @@ type ProductsShoppingCartType = {
 type arrayProductsShoppingCartType = ProductsShoppingCartType[]
 
 function Home() {
+  const { userId } = useParams()
   const [products, setProducts] = useState<arrayProducts >()
   const [productsAddedToShoppingCart, setProductsAddedToShoppingCart] =
    useState<arrayProductsShoppingCartType>([{
@@ -32,15 +33,9 @@ function Home() {
     id: ''
    }])
 
- 
    const [totalTermValue, setTotalTermValue] = useState(0)
    const [totalInSightValue, setTotalInSightValue] = useState(0)
-
-   
-  
-
-
-  const { userId } = useParams()
+   const [finalizingThePurchase, setFinalizingThePurchase] = useState(false)
 
 
   async function ShowProducts() {
@@ -56,12 +51,20 @@ function handleCartValue(){
     if( product.forwardPrice && product.forwardPrice !== ''){
       const stringToNumber = parseFloat(product.forwardPrice.replace(',', '.'))
       SomaForwardPrice += stringToNumber
+      if(product.frete){
+      const stringToNumber = parseFloat(product.frete.replace(',', '.'))
+      SomaForwardPrice += stringToNumber
+      }
     }
      setTotalTermValue( SomaForwardPrice)
 
     if( product.spotPrice && product.spotPrice !== ''){
       const stringToNumber = parseFloat(product.spotPrice.replace(',', '.'))
       SomaSpotPrice += stringToNumber
+      if(product.frete){
+        const stringToNumber = parseFloat(product.frete.replace(',', '.'))
+        SomaSpotPrice += stringToNumber
+        }
     }
     setTotalInSightValue(SomaSpotPrice)
   })
@@ -76,38 +79,56 @@ function handleCartValue(){
     <>
       <Header userId={userId} />
       <div className='home-container'>
-      <div className='home-show-product-container'>
-      {products ? (
-         products.map(product => 
-          <CardProducts 
-          forwardPrice={product.forwardPrice}
-          frete={product.frete}
-          namePhoto={product.namePhoto}
-          spotPrice={product.forwardPrice}
-          title={product.title}
-          pricePrevious= {product.pricePrevious}
-          key={product.productId}
-          productId={product.productId}
-          userLogged={userId}
-          addProduct={() => {
-             setProductsAddedToShoppingCart([...productsAddedToShoppingCart,{
-              title : product.title,
-              forwardPrice: product.forwardPrice,
-              frete: product.frete,
-              spotPrice: product.spotPrice,
-              id: product.productId
-             }])
-          }}
-          />)
-      ) : (
-        <div className="menu_none">
-          <h1>Não há produtos cadastrados.</h1>
-        </div>
-      )}
-      </div>
+        {!finalizingThePurchase ? (
+               <div className='home-show-product-container'>
+               {products ? (
+                  products.map(product => 
+                   <CardProducts 
+                   forwardPrice={product.forwardPrice}
+                   frete={product.frete}
+                   namePhoto={product.namePhoto}
+                   spotPrice={product.forwardPrice}
+                   title={product.title}
+                   pricePrevious= {product.pricePrevious}
+                   key={product.productId}
+                   productId={product.productId}
+                   userLogged={userId}
+                   addProduct={() => {
+                      setProductsAddedToShoppingCart([...productsAddedToShoppingCart,{
+                       title : product.title,
+                       forwardPrice: product.forwardPrice,
+                       frete: product.frete,
+                       spotPrice: product.spotPrice,
+                       id: product.productId
+                      }])
+                   }}
+                   />)
+               ) : (
+                 <div className="menu_none">
+                   <h1>Não há produtos cadastrados.</h1>
+                 </div>
+               )}
+               </div>
+        ): (
+          <div className='home-menu-finalizingThePurchase'>
+            <h2>Orientação para fechamento da compra:</h2>
+            <p> Para sua segurança e da empresa Kassinha Variedades, será necessário,
+              a sua escolha, a forma de pagamento:
+            </p>           
+            <p><strong>1-</strong> Você poderá escolher pagar via Pix com o código da loja NUMERO-PIX-DA-LOJA.</p>
+              <div className='card-shopping-cart-close-value-button finalizingThePurchase'>
+                     Pagamento via PIX
+              </div>
+            <p><strong>2-</strong> Você poderá escolher pagar na loja pessoalmente.</p> 
+              <div className='card-shopping-cart-close-value-button finalizingThePurchase'>
+                     Pagamento na loja
+              </div> 
+          </div>
+        )}
+
       {productsAddedToShoppingCart.length > 1 && (
         <div className='home-menu-shopping-cart'>
-          <h1>Carrinho:</h1>
+          <h1>Carrinho de compras:</h1>
           {productsAddedToShoppingCart.map(product => (
            <div className='card-shopping-cart' key={product.id} >
             {product.id !== '' && (
@@ -126,18 +147,22 @@ function handleCartValue(){
                <div className='card-shopping-cart-total-value'>
                 <div className='card-shopping-cart-total-value-button' 
                 onClick={handleCartValue}>
-                  Fechar container
+                  Calcular total
                 </div>
                {(totalTermValue !== 0 || totalInSightValue !== 0) && (
                 <>
                     <div className='card-shopping-cart-value'>
-                     Total à vista: R$ {totalTermValue}
+                      Total à prazo: R$ {totalTermValue}
                     </div>
                     <div className='card-shopping-cart-value'>
-                      Total à prazo: R$ {totalInSightValue}
-                    </div>
+                     Total à vista: R$ {totalInSightValue}
+                    </div> 
+                    <div className='card-shopping-cart-close-value-button' 
+                    onClick={() => setFinalizingThePurchase(prev => !prev)}  >
+                      Fazer pedido
+                    </div>                  
                 </>
-               )}
+               )}     
            </div>
         </div>
       )}

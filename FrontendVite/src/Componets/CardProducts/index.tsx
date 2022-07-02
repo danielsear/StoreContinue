@@ -45,6 +45,7 @@ function CardProducts({
   const [img, setImg] = useState<DataImageType>()
   const [editFildProduct, setEditFildProduct] = useState(true)
   const [product, setProduct] = useState<ProductsType>()
+  const [disableButtonAddProduct,setTisableButtonAddProduct] = useState(false)
 
   
   async function ShowImage(){
@@ -78,6 +79,13 @@ function CardProducts({
    console.log('Like!');
    
     
+  }
+
+  function onclickAddProduct(){
+    setTisableButtonAddProduct(true)
+    if(addProduct){
+      addProduct()
+    }
   }
  
 
@@ -123,7 +131,7 @@ function CardProducts({
           {userLogged && (
             <div className='card-buy-products'>
               <div>
-                <button className='card-button-add-product' onClick={addProduct}>Adicionar ao carrinho</button>
+               {!disableButtonAddProduct &&  <button className='card-button-add-product' onClick={onclickAddProduct}>Adicionar ao carrinho</button>}
               </div>
               <div>
                 <button className='card-button-buy-product' >Comprar</button>

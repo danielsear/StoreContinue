@@ -43,9 +43,37 @@
   margin: 1rem 0;
   padding: 0.255rem;
   font-size: 1rem;
-   background: #04d483;
+   background: #f03c1d;
   border: 1px solid rgba(77, 57, 57, 0.303);
 
   cursor: pointer;
 
+}
+.card-shopping-cart-close-value-button{
+  display: flex;
+  justify-content: center;
+
+  margin: 1rem 0;
+  padding: 0.255rem;
+  font-size: 1rem;
+   background:#04d483;
+  border: 1px solid rgba(77, 57, 57, 0.303);
+
+  cursor: pointer;
+}
+.card-shopping-cart-close-value-button:hover{
+  color: #fff;
+}
+
+.home-menu-finalizingThePurchase{
+  width: 70%;
+
+  display: flex;
+  flex-direction: column;
+
+  margin-left: 1rem;
+}
+
+.finalizingThePurchase{
+  width: 10rem;
 }
