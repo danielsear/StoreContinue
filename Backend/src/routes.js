@@ -5,6 +5,9 @@ const multerConfig = require('./config/multer')
 const Image = require('./models/Image')
 const User = require('./models/User')
 const Product = require('./models/Products')
+const CustomerOrders= require('./models/CustomerOrders')
+
+
 
 //IMAGESs
 
@@ -161,6 +164,33 @@ routes.post('/delete-product/:id', async (req, res) => {
   await product.remove()
 
   return res.json('Produto deletado com sucesso.')
+})
+
+//CustomerOrders
+
+routes.get('/customerOrders-list', async (req,res) =>{
+  const customerOrders = await CustomerOrders.find()
+  return res.json(customerOrders)
+})
+
+routes.post('/customerOrders-create', async (req, res) =>{
+  const {nameProducts, userId, proofOfPaymentPhoto, formOfPayment, paymentId} = req.body
+
+  if(req.body){
+    CustomerOrders.create({
+      nameProducts, 
+      userId,
+      proofOfPaymentPhoto,
+      formOfPayment, 
+      paymentId
+    })
+  }
+
+  res.json({
+    error: false,
+    message: 'Pagamento cadastrado com sucesso.'
+  })
+
 })
 
 module.exports = routes
