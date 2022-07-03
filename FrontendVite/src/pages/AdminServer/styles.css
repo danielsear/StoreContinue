@@ -13,6 +13,10 @@
   margin: 1rem 1rem;
 }
 
+.admin-register-product-container{
+  display: flex;
+}
+
 .admin-register-product button{
   border: 1px solid #202020;
   padding: 1rem;

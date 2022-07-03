@@ -1,0 +1,34 @@
+
+.ListCustomeOrder-container{
+
+}
+
+.ListCustomeOrder-show-info-customerOrders{
+  display: flex;
+  flex-direction: column;
+
+  border: 1px solid #000;
+}
+
+.ListCustomeOrder-show-info-customerOrders-products{
+  display: flex;
+}
+.ListCustomeOrder-show-info-customerOrders-products h4{
+  margin-left: 2rem;
+}
+
+.ListCustomeOrder-show-info-customerOrders-formOfPayment{
+  margin-left: 3rem;
+  display: flex;
+}
+.ListCustomeOrder-show-info-customerOrders-formOfPayment-text{
+  display: flex;
+  flex-direction: column;
+}
+.ListCustomeOrder-show-info-customerOrders-formOfPayment div{
+  margin-left: 3rem;
+}
+.ListCustomeOrder-show-info-customerOrders-formOfPayment div img{
+  width: 9rem;
+  height: 9rem;
+}

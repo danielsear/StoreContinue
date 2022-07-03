@@ -115,7 +115,7 @@ function Home() {
         const dataPayment  = await CreateCustomerOrders({
           nameProducts: nameProducts,
           paymentId : paymentId,
-          pormOfPayment: 'PIX',
+          formOfPayment: 'PIX',
           proofOfPaymentPhoto: imgPaymentPix.name,
           userId: userId
         })
@@ -137,7 +137,7 @@ function Home() {
       const dataPayment  = await CreateCustomerOrders({
         nameProducts: nameProducts,
         paymentId : paymentId,
-        pormOfPayment: 'Payment in store',
+        formOfPayment: 'Payment in store',
         userId: userId
       })
       setMessage(dataPayment)

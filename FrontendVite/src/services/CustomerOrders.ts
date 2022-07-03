@@ -3,7 +3,7 @@ export type CustumerOdersType = {
   nameProducts: Array<string>,
   userId: string,
   proofOfPaymentPhoto?: string,
-  pormOfPayment: string,
+  formOfPayment: string,
   paymentId: string,
 }
 
@@ -13,13 +13,13 @@ export type DataPaymentType = {
 }
 
 async function CreateCustomerOrders(custumerOders:CustumerOdersType) : Promise<DataPaymentType> {
-  const {pormOfPayment,proofOfPaymentPhoto,userId,nameProducts,paymentId} = custumerOders
+  const {formOfPayment,proofOfPaymentPhoto,userId,nameProducts,paymentId} = custumerOders
  return  await fetch(`http://localhost:3333/customerOrders-create`,{
     method: 'POST',
     headers: {
       'Content-Type' : 'application/json'
     },
-    body: JSON.stringify({pormOfPayment,proofOfPaymentPhoto,userId,nameProducts,paymentId})
+    body: JSON.stringify({formOfPayment,proofOfPaymentPhoto,userId,nameProducts,paymentId})
   })
   .then(res => res.json())
   .then(data => {
