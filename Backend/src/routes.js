@@ -174,7 +174,7 @@ routes.get('/customerOrders-list', async (req,res) =>{
 })
 
 routes.post('/customerOrders-create', async (req, res) =>{
-  const {nameProducts, userId, proofOfPaymentPhoto, formOfPayment, paymentId} = req.body
+  const {nameProducts, userId, proofOfPaymentPhoto, formOfPayment, paymentId, spotPrice ,forwardPrice} = req.body
 
   if(req.body){
     CustomerOrders.create({
@@ -182,7 +182,9 @@ routes.post('/customerOrders-create', async (req, res) =>{
       userId,
       proofOfPaymentPhoto,
       formOfPayment, 
-      paymentId
+      paymentId,
+      spotPrice,
+      forwardPrice,
     })
   }
 

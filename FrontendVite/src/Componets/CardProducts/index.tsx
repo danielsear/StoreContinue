@@ -1,15 +1,15 @@
 import './styles.css'
 
 import { useEffect, useState } from 'react'
-import { FindImage, DataImageType, DeleteImage} from '../../services/Images'
-import { DeleteProduct, ProductsType} from '../../services/Products'
+import { FindImage, DataImageType} from '../../services/Images'
+import { DeleteProduct} from '../../services/Products'
 
 import FormCardEdit from '../FormCardEdit'
 
 import editProduct from '../../assets/images/edit.svg'
 import deleteProduct from '../../assets/images/delete-product.svg'
 import like from '../../assets/images/like.svg'
-import { FindUsers , UpdateUser, User} from '../../services/User'
+import { User} from '../../services/User'
 
 
 
@@ -44,7 +44,6 @@ function CardProducts({
 } : UserProduct){
   const [img, setImg] = useState<DataImageType>()
   const [editFildProduct, setEditFildProduct] = useState(true)
-  const [product, setProduct] = useState<ProductsType>()
   const [disableButtonAddProduct,setTisableButtonAddProduct] = useState(false)
 
   
@@ -131,7 +130,8 @@ function CardProducts({
           {userLogged && (
             <div className='card-buy-products'>
               <div>
-               {!disableButtonAddProduct &&  <button className='card-button-add-product' onClick={onclickAddProduct}>Adicionar ao carrinho</button>}
+               {!disableButtonAddProduct &&  <button className='card-button-add-product'
+                onClick={onclickAddProduct}>Adicionar ao carrinho</button>}
               </div>
               <div>
                 <button className='card-button-buy-product' >Comprar</button>

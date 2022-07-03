@@ -3,7 +3,7 @@ import './styles.css'
 import { useState , useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 
-import { v4 } from 'uuid'
+import { parse, v4 } from 'uuid'
 
 import Footer from '../../Componets/Footer'
 import Header from '../../Componets/Header'
@@ -58,6 +58,8 @@ function Home() {
   }
 
   function handleCartValue(){
+    setTotalInSightValue(0)
+    setTotalTermValue(0)
   var SomaForwardPrice = 0
   var SomaSpotPrice= 0
 
@@ -70,7 +72,8 @@ function Home() {
       SomaForwardPrice += stringToNumber
       }
     }
-     setTotalTermValue( SomaForwardPrice)
+      const total= ( 3 * SomaForwardPrice)
+     setTotalTermValue( total)
 
     if( product.spotPrice && product.spotPrice !== ''){
       const stringToNumber = parseFloat(product.spotPrice.replace(',', '.'))
@@ -85,7 +88,7 @@ function Home() {
   }
 
   function handleRefreshingPage(){
-    setFinalizingThePurchase(false)
+          setFinalizingThePurchase(false)
           setPixPayment(false)
           setProductsAddedToShoppingCart([{
             forwardPrice: '',
@@ -93,11 +96,14 @@ function Home() {
             title: '',
             id: ''
            }])
-           setMessage({
+          setMessage({
             error: true,
             message: ''
            })
-           setRefreshingPage(true)
+          setTotalInSightValue(0)
+          setTotalTermValue(0)
+          setFinalizingThePurchase(false)
+          setRefreshingPage(true)
   }
 
   async function handlePixPayment() {
@@ -117,7 +123,9 @@ function Home() {
           paymentId : paymentId,
           formOfPayment: 'PIX',
           proofOfPaymentPhoto: imgPaymentPix.name,
-          userId: userId
+          userId: userId,
+          spotPrice: totalInSightValue.toString(),
+          forwardPrice: totalTermValue.toString(),
         })
         setMessage(dataPayment)
         setTimeout(() => {
@@ -138,7 +146,9 @@ function Home() {
         nameProducts: nameProducts,
         paymentId : paymentId,
         formOfPayment: 'Payment in store',
-        userId: userId
+        userId: userId,
+        spotPrice: totalInSightValue.toString(),
+        forwardPrice: totalTermValue.toString(),
       })
       setMessage(dataPayment)
       setTimeout(() => {
@@ -204,7 +214,7 @@ function Home() {
              </div>
              ):(
                 <div className='card-shopping-cart-close-value-payment-pix'>
-                  <p><strong>a)</strong> Primeiramente, faça o pagamento utilizando o numero ddo pix da loja <strong>NUMERO-PIX-DA-LOJA.</strong></p>
+                  <p><strong>a)</strong> Primeiramente, faça o pagamento utilizando o numero pix da loja <strong>NUMERO-PIX-DA-LOJA.</strong></p>
                   <p><strong>b)</strong> Segundo, tire um print ou foto do comprovante do pix e faça o upload(carregamento) da foto ou print na seção abaixo:</p>
                   {imgPaymentPix && (
                     <div className="card-shopping-cart-close-value-payment-pix-show-img">
@@ -269,7 +279,7 @@ function Home() {
               {product.frete && (
                 <div className='card-frete'>Frete : R$ {product.frete}</div>
               )}
-              <div className='card-shopping-cart-value'>Preço à prazo: R$ {product.forwardPrice}</div>
+              <div className='card-shopping-cart-value'>Preço à prazo: até 3x de R$ {product.forwardPrice}</div>
               <div className='card-shopping-cart-value'>Preço à vista: R$ {product.spotPrice}</div>
               <hr/>
              </div>

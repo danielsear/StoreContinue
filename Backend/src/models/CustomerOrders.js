@@ -8,6 +8,8 @@ const CustomerOrdersSchema = new mongoose.Schema({
   proofOfPaymentPhoto: String,
   formOfPayment: String,
   paymentId: String,
+  spotPrice: String,
+  forwardPrice:String,
   createAt: {
     type: Date,
     default: Date.now

@@ -2,20 +2,19 @@ import './styles.css'
 
 import {v4} from 'uuid'
 import { RegisterImage} from '../../services/Images'
-import { CreateProduct, ProductsType} from '../../services/Products'
+import { CreateProduct} from '../../services/Products'
 import productDefault from '../../assets/images/product_searching_icon_181876.svg'
 
-import { ChangeEvent, FormEvent, useEffect, useState } from 'react'
-import { useNavigate } from 'react-router'
+import { ChangeEvent, FormEvent, useState } from 'react'
 
-type arrayProducts = ProductsType[]
+
+
 type formcardType = {
   ativeReload: () => void,
 }
 
 function FormCard({ativeReload} : formcardType){
   const [message, setMessage] = useState('')
-  const navigate = useNavigate()
   const [img, setImg] = useState<File>()
   const [product, setProduct] = useState({
     title: '',
@@ -94,10 +93,6 @@ function FormCard({ativeReload} : formcardType){
      <div className='form-card-description-name'>
         <label >Titulo:</label>
         <input type="text" name='title' onChange={handleProduct}/>
-        </div>
-      <div className='form-card-frete'>
-        <label >Frete:</label>
-        <input type="text" name='frete'onChange={handleProduct}/>
         </div>
       <div className='form-card-price-previous'>
       <label >Preço anterior:</label>

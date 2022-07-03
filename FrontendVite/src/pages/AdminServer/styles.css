@@ -51,6 +51,6 @@
   display: block;
   margin-left: 2rem;
 }
-.admin-remove-form-card{
-  display: none;
+.admin-showFormCardProduct{
+  margin: 1rem 1rem;
 }

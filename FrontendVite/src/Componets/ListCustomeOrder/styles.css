@@ -1,6 +1,6 @@
 
 .ListCustomeOrder-container{
-
+  margin: 1rem 1rem;
 }
 
 .ListCustomeOrder-show-info-customerOrders{
@@ -9,7 +9,19 @@
 
   border: 1px solid #000;
 }
+.ListCustomeOrder-show-info-customerOrders-user{
+  display: flex;
+}
+.ListCustomeOrder-show-info-customerOrders-date{
+  border-top: none;
+  border-left: none;
+  border-right: 1px solid #000;
+  border-bottom: 1px solid #000;
 
+  margin-right: 1rem;
+  height: 2rem;
+  padding: 1rem;
+}
 .ListCustomeOrder-show-info-customerOrders-products{
   display: flex;
 }
@@ -28,7 +40,15 @@
 .ListCustomeOrder-show-info-customerOrders-formOfPayment div{
   margin-left: 3rem;
 }
-.ListCustomeOrder-show-info-customerOrders-formOfPayment div img{
+.ListCustomeOrder-show-info-customerOrders-formOfPayment-img img{
   width: 9rem;
   height: 9rem;
+  cursor: pointer;
+}
+
+.showPhoto img{
+  position: absolute;
+  cursor: pointer;
+  width: 17rem;
+  height: 17rem;
 }

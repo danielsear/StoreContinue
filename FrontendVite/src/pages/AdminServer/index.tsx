@@ -20,12 +20,14 @@ type arrayCustumerOders = CustumerOdersType[]
 
 function AdminServer(){
   const [products, setProducts] = useState<arrayProducts>()
-  const [reload, setReload] = useState(false)
-  const [showListCustomeOrder, setShowListCustomeOrder] = useState(false)
   const [arrayCustomerOrders, setArrayCustomerOrders] = useState<arrayCustumerOders>()
 
-  console.log(arrayCustomerOrders);
-  
+  const [reload, setReload] = useState(false)
+  const [showListCustomeOrder, setShowListCustomeOrder] = useState(false)
+  const [showFormCardProduct, setShowFormCardProduct] = useState(false)
+
+
+
   
   async function LoadingCustomerOrders(){
     const customer : arrayCustumerOders = await FindCustumerOrders()
@@ -39,26 +41,11 @@ function AdminServer(){
     setProducts(products)
   }
   
-  function showFormCardProduct(){
-    const fildFormCard = document.querySelector('.admin-remove-form-card')
-    fildFormCard?.classList.remove('admin-remove-form-card')
-    fildFormCard?.classList.add('admin-show-form-card')
-
-    const fildFormCardButtonRegister = document.querySelector('.admin-register-product')
-    fildFormCardButtonRegister?.classList.remove('admin-register-product')
-    fildFormCardButtonRegister?.classList.add('admin-remove-register-product')
-  }
 
   const ativeReload= () => {
     setTimeout(() => {
       setReload(prev => !prev)
-      const removeFildFormCardButtonRegister = document.querySelector('.admin-show-form-card')
-      removeFildFormCardButtonRegister?.classList.remove('admin-show-form-card')
-      removeFildFormCardButtonRegister?.classList.add('admin-remove-form-card')
-
-      const fildFormCardButtonRegister = document.querySelector('.admin-remove-register-product')
-      fildFormCardButtonRegister?.classList.remove('admin-remove-register-product')
-      fildFormCardButtonRegister?.classList.add('admin-register-product')
+      setShowFormCardProduct(prev => !prev)
     }, 3000);
   }
 
@@ -81,13 +68,20 @@ function AdminServer(){
         ): (
           <>
             <div className='admin-register-product' >
-              <button onClick={showFormCardProduct}>Cadastrar produto</button>
+              <button onClick={() => setShowFormCardProduct(prev => !prev)}
+              >{!showFormCardProduct ? (
+                "Cadastrar produto"
+              ): (
+                'Cancelar'
+              )}</button>
             </div>
-            <div className='admin-register-product' >
-              <button onClick={
-                LoadingCustomerOrders
-              }>Mostrar lista de pedidos</button>
-            </div>
+            {!showFormCardProduct && (
+               <div className='admin-register-product' >
+                  <button onClick={
+                    LoadingCustomerOrders
+                  }>Mostrar lista de pedidos</button>
+               </div>
+            )}
           </>
         )}
         </div>
@@ -111,14 +105,16 @@ function AdminServer(){
               <h1>Não há produtos cadastrados.</h1>  
             </div>
           )}
-          <div className='admin-remove-form-card'>
+          {showFormCardProduct && (
+            <div className='admin-showFormCardProduct'>
             <FormCard ativeReload={ativeReload}/>
           </div>
+          )}
           </div>
         ):(
          <div>
           <h1>Listando Pedidos:</h1>
-           {arrayCustomerOrders && (
+           {arrayCustomerOrders && arrayCustomerOrders.length>0 ? (
             arrayCustomerOrders?.map(customer => (
               <ListCustomeOrder 
                 formOfPayment={customer.formOfPayment}
@@ -126,9 +122,16 @@ function AdminServer(){
                 paymentId={customer.paymentId}
                 userId={customer.userId}
                 proofOfPaymentPhoto={customer.proofOfPaymentPhoto}
+                spotPrice={customer.spotPrice}
+                forwardPrice={customer.forwardPrice}
+                createAt={customer.createAt}
                 key={customer.paymentId}
               />
             ))
+           ) : (
+            <div>
+              <h2>Nenhum pedido cadastrado.</h2>
+            </div>
            )}
          </div>
         )} 
