@@ -23,8 +23,22 @@ It lacks some features:
  delete orders from the current order page.
 
 
+
+
 sites:
 
  site icons => https://icon-icons.com/pt/
 
  site para codar expressões => https://regex101.com/
+
+
+ # to initialize:
+ # Comand
+  * cd Backend
+  * npm install
+  * npm run dev
+
+  * cd ..
+  * cd FontendVite
+  * npm install
+  * npm run dev
