@@ -36,9 +36,9 @@ sites:
  # Comand
   * cd Backend
   * npm install
-  --> create a folder > tmp, inside it a folder  > uploads
-  --> register on the mongodb website > https://www.mongodb.com/ 
-  -->create a new project, then a database,
+  * --> create a folder > tmp, inside it a folder  > uploads
+  * --> register on the mongodb website > https://www.mongodb.com/ 
+  * -->create a new project, then a database,
       go to connect > connect in your application,
       copy the connection string replacing the values of your username and password,
       create a .env document, create a variable MONGOOSE_URL_CONECTION2 = (paste the database connection string)
