@@ -101,7 +101,7 @@ routes.get('/products', async (req, res) => {
 })
 
 routes.post('/product-create', async (req, res) => {
-  const { title, spotPrice, forwardPrice, productId, namePhoto,pricePrevious,frete } = req.body
+  const { title, spotPrice, forwardPrice, productId, namePhoto,pricePrevious,frete,group } = req.body
 
   if(req.body){
 
@@ -112,7 +112,8 @@ routes.post('/product-create', async (req, res) => {
     forwardPrice,
     namePhoto,
     pricePrevious,
-    productId
+    productId,
+    group
   })
   return res.json({
     error: false,
@@ -127,7 +128,7 @@ return res.status(400).json({
 })
 
 routes.post('/product-update', async (req, res) => {
-  const { title, spotPrice, forwardPrice, productId, namePhoto,pricePrevious,frete } = req.body
+  const { title, spotPrice, forwardPrice, productId, namePhoto,pricePrevious,frete,group } = req.body
 
   if(req.body){
 
@@ -138,7 +139,8 @@ routes.post('/product-update', async (req, res) => {
     forwardPrice,
     namePhoto,
     pricePrevious,
-    productId
+    productId,
+    group
   })
   return res.json({
     error: false,

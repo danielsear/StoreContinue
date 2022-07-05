@@ -24,6 +24,7 @@ function FormCard({ativeReload} : formcardType){
     namePhoto: '',
     pricePrevious: '',
     id: '' ,
+    group: ''
 })
 
 
@@ -50,7 +51,8 @@ function FormCard({ativeReload} : formcardType){
         title: product.title,
         forwardPrice: product.forwardPrice,
         frete: product.frete,
-        productId: id 
+        productId: id,
+        group: product.group
       })
       setMessage('Produto cadastrado com sucesso.')
     }
@@ -91,9 +93,13 @@ function FormCard({ativeReload} : formcardType){
       </div>
      <div className='form-card-description'>
      <div className='form-card-description-name'>
+        <label >Grupo:</label>
+        <input type="text" name='group' onChange={handleProduct}/>
+      </div>
+     <div className='form-card-description-name'>
         <label >Titulo:</label>
         <input type="text" name='title' onChange={handleProduct}/>
-        </div>
+      </div>
       <div className='form-card-price-previous'>
       <label >Preço anterior:</label>
         <input type="text" name='pricePrevious'onChange={handleProduct}/>
@@ -103,7 +109,7 @@ function FormCard({ativeReload} : formcardType){
         <input type="text" name='spotPrice'onChange={handleProduct}/>
         </div>
       <div className='form-card-price-installment'>
-        <label >Preço a prazo:</label>
+        <label >ou 3x de:</label>
          <input type="text" name='forwardPrice'onChange={handleProduct}/>
         </div>
         <div className='form-card-button'>

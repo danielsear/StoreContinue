@@ -19,6 +19,7 @@ function FormCardEdit({
   pricePrevious,
   frete, 
   productId,
+  group
 }: ProductsType){
   const [message, setMessage] = useState('')
   const navigate = useNavigate()
@@ -31,6 +32,7 @@ function FormCardEdit({
     namePhoto: '',
     pricePrevious: '',
     id: '' ,
+    group: '',
 })
 
 
@@ -60,7 +62,8 @@ function FormCardEdit({
         title: product.title,
         forwardPrice: product.forwardPrice,
         frete: product.frete,
-        productId: productId 
+        productId: productId,
+        group: product.group
       })
       setMessage('Produto editado com sucesso.')
     }
@@ -99,13 +102,13 @@ function FormCardEdit({
         }}/>
       </div>
      <div className='form-card-description'>
+     <div className='form-card-frete'>
+        <label >Grupo:</label>
+        <input type="text" name='group'onChange={handleProduct} placeholder={group}/>
+        </div>
      <div className='form-card-description-name'>
         <label >Titulo:</label>
         <input type="text" name='title' onChange={handleProduct} placeholder={title}/>
-        </div>
-      <div className='form-card-frete'>
-        <label >Frete:</label>
-        <input type="text" name='frete'onChange={handleProduct} placeholder={frete}/>
         </div>
       <div className='form-card-price-previous'>
       <label >Preço anterior:</label>

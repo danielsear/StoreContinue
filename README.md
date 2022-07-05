@@ -7,7 +7,7 @@ So StoreContinue is a page of a product sales store. My intention is to put all 
 
 To begin with, we have the HOME page, where it includes all the visualization of the store's products, the customer's loggin menu, where he can be redirected to the login page or, if he has not yet registered, to the registration page. So, after the user is logged in, he will have all purchase functionalities released, he will be able to add the products of his choice in the shopping cart, where the selected products will be shown and their price with their respective payment methods, being able to calculate the total result of the your purchase. And so, at the end, you can place your order after choosing the payment method to be made by him, being the following: by pix, where he will receive the pix information from the store, having to make the payment and after loading the print or photo proof of the same, thus finalizing the purchase; or you can choose to pay in person at the store, where the order will be placed on the spot, waiting for the customer.
 Still a few things:
-#add direct purchase: the customer has selected only one product.
+ add direct purchase: the customer has selected only one product.
  separate products by sections: eg toys, household items, stationery etc.
  add the likes feature for the offer: the customer can mark possible likes for future offers and thus purchases.
  search functionality: search for a product that you are currently interested in.

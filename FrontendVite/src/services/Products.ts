@@ -10,7 +10,8 @@ export type ProductsType = {
   pricePrevious: string,
   productId?: string,
   admin?: boolean,
-  userLogged?: string
+  userLogged?: string,
+  group: string
 }
 
 async function FindProducts() {
@@ -27,28 +28,28 @@ async function FindProducts() {
 }
 
 async function CreateProduct(data: ProductsType) {
-  const { title, spotPrice, forwardPrice, productId, namePhoto,pricePrevious,frete } = data
+  const { title, spotPrice, forwardPrice, productId, namePhoto,pricePrevious,frete, group } = data
 
  return await fetch('http://localhost:3333/product-create', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({ title, spotPrice, forwardPrice, productId, namePhoto,pricePrevious,frete })
+    body: JSON.stringify({ title, spotPrice, forwardPrice, productId, namePhoto,pricePrevious,frete, group })
   })
     .then()
     .catch(err => console.error(err))
 }
 
 async function UpdateProduct(data: ProductsType) {
-  const { title, spotPrice, forwardPrice, productId, namePhoto,pricePrevious,frete }  = data
+  const { title, spotPrice, forwardPrice, productId, namePhoto,pricePrevious,frete,group }  = data
 
  return await fetch('http://localhost:3333/product-update', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({ title, spotPrice, forwardPrice, productId, namePhoto,pricePrevious,frete })
+    body: JSON.stringify({ title, spotPrice, forwardPrice, productId, namePhoto,pricePrevious,frete,group })
   })
     .then()
     .catch(err => console.error(err))

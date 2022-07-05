@@ -9,7 +9,7 @@ import FormCardEdit from '../FormCardEdit'
 import editProduct from '../../assets/images/edit.svg'
 import deleteProduct from '../../assets/images/delete-product.svg'
 import like from '../../assets/images/like.svg'
-import { User} from '../../services/User'
+
 
 
 
@@ -25,10 +25,12 @@ type UserProduct = {
   productId?: string,
   admin?: boolean,
   userLogged?: string,
+  group: string
+  ativeReload: () => void
   addProduct?: () => void
 }
 
-type arrayUsers = User[]
+
 
 function CardProducts({
   forwardPrice,
@@ -40,7 +42,9 @@ function CardProducts({
   productId,
   admin,
   userLogged,
-  addProduct
+  group,
+  addProduct,
+  ativeReload
 } : UserProduct){
   const [img, setImg] = useState<DataImageType>()
   const [editFildProduct, setEditFildProduct] = useState(true)
@@ -57,6 +61,7 @@ function CardProducts({
   async function handleDeleteProduct(){
     if(productId){
       const deleteProduct = await DeleteProduct(productId)
+      ativeReload()
       /*error ao deletar imagem
         if(namePhoto){
         const deleteImage = await DeleteImage(namePhoto)
@@ -149,6 +154,7 @@ function CardProducts({
             pricePrevious={pricePrevious}
             frete={frete}
             productId={productId}
+            group={group}
           />
         </div>
       )}

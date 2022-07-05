@@ -9,6 +9,7 @@ const ProductSchema = new mongoose.Schema({
   namePhoto: String,
   pricePrevious: String,
   productId: String,
+  group: String,
   createAt: {
     type: Date,
     default: Date.now

@@ -49,6 +49,12 @@ function AdminServer(){
     }, 3000);
   }
 
+  const ativeReloadDelete = () =>{
+    setTimeout(() => {
+      setReload(prev => !prev)
+    }, 3000);
+  }
+
   useEffect(()=>{
     ShowProducts()
     
@@ -93,12 +99,14 @@ function AdminServer(){
                   forwardPrice={product.forwardPrice}
                   frete={product.frete}
                   namePhoto={product.namePhoto}
-                  spotPrice={product.forwardPrice}
+                  spotPrice={product.spotPrice}
                   title={product.title}
                   pricePrevious= {product.pricePrevious}
                   key={product.productId}
                   productId={product.productId}
                   admin={true}
+                  group={product.group}
+                  ativeReload={ativeReloadDelete}
                   />)
           ) : (
             <div className="menu_none">
