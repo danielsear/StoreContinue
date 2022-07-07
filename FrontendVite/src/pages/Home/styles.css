@@ -1,7 +1,23 @@
 .home-show-product-container{
+  width: 100%;
   padding: 2rem;
   display: flex;
+  flex-direction: column;
+}
+
+.home-show-product-group-container{
+  display: flex;
+  flex-direction: column;
+}
+
+.home-show-product-group{
+  display: flex;
   flex-wrap: wrap;
+
+  background: #F8EEDB;
+  border: 1px solid #f8eedba9;
+  margin: 1rem 1rem;
+  width: 100%;
 }
 
 .menu_none{

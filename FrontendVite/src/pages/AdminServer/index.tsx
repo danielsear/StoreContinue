@@ -21,12 +21,11 @@ type arrayCustumerOders = CustumerOdersType[]
 function AdminServer(){
   const [products, setProducts] = useState<arrayProducts>()
   const [arrayCustomerOrders, setArrayCustomerOrders] = useState<arrayCustumerOders>()
-
+ 
+  
   const [reload, setReload] = useState(false)
   const [showListCustomeOrder, setShowListCustomeOrder] = useState(false)
   const [showFormCardProduct, setShowFormCardProduct] = useState(false)
-
-
 
   
   async function LoadingCustomerOrders(){
@@ -35,7 +34,6 @@ function AdminServer(){
     setShowListCustomeOrder(prev => !prev)
   }
   
-
   async function ShowProducts() {
     const products : arrayProducts = await FindProducts()
     setProducts(products)

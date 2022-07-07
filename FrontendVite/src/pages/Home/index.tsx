@@ -3,7 +3,7 @@ import './styles.css'
 import { useState , useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 
-import { parse, v4 } from 'uuid'
+import { v4 } from 'uuid'
 
 import Footer from '../../Componets/Footer'
 import Header from '../../Componets/Header'
@@ -33,6 +33,8 @@ type arrayProductsShoppingCartType = ProductsShoppingCartType[]
 function Home() {
   const { userId } = useParams()
   const [products, setProducts] = useState<arrayProducts >()
+
+ 
   const [productsAddedToShoppingCart, setProductsAddedToShoppingCart] =
    useState<arrayProductsShoppingCartType>([{
     forwardPrice: '',
@@ -40,7 +42,7 @@ function Home() {
     title: '',
     id: ''
    }])
-
+ 
    const [totalTermValue, setTotalTermValue] = useState(0)
    const [totalInSightValue, setTotalInSightValue] = useState(0)
    const [finalizingThePurchase, setFinalizingThePurchase] = useState(false)
@@ -49,8 +51,7 @@ function Home() {
    const [message, setMessage] = useState<DataPaymentType>()
    const [refreshingPage, setRefreshingPage] = useState(false)
 
-
-
+  
 
   async function ShowProducts() {
     const products : arrayProducts = await FindProducts()
@@ -157,6 +158,7 @@ function Home() {
     }
   }
 
+
   useEffect(()=>{
     ShowProducts()
   },[refreshingPage])
@@ -168,27 +170,116 @@ function Home() {
         {!finalizingThePurchase ? (
                <div className='home-show-product-container'>
                {products ? (
-                  products.map(product => 
-                   <CardProducts 
-                   forwardPrice={product.forwardPrice}
-                   frete={product.frete}
-                   namePhoto={product.namePhoto}
-                   spotPrice={product.forwardPrice}
-                   title={product.title}
-                   pricePrevious= {product.pricePrevious}
-                   key={product.productId}
-                   productId={product.productId}
-                   userLogged={userId}
-                   addProduct={() => {
-                      setProductsAddedToShoppingCart([...productsAddedToShoppingCart,{
-                       title : product.title,
-                       forwardPrice: product.forwardPrice,
-                       frete: product.frete,
-                       spotPrice: product.spotPrice,
-                       id: product.productId
-                      }])
-                   }}
-                   />)
+                      <>
+                        <div className='home-show-product-group-container'>
+                          <h2>Brinquedos:</h2>
+                          <div className='home-show-product-group'>     
+                          {  products.map(product => 
+                             {
+                              if(product.group === 'Brinquedo'){
+                                return(
+                                  <CardProducts 
+                             ativeReload={()=> ''}
+                             group={product.group}
+                             forwardPrice={product.forwardPrice}
+                             frete={product.frete}
+                             namePhoto={product.namePhoto}
+                             spotPrice={product.spotPrice}
+                             title={product.title}
+                             pricePrevious= {product.pricePrevious}
+                             key={product.productId}
+                             productId={product.productId}
+                             userLogged={userId}
+                             addProduct={() => {
+                                 setProductsAddedToShoppingCart([...productsAddedToShoppingCart,{
+                                 title : product.title,
+                                 forwardPrice: product.forwardPrice,
+                                 frete: product.frete,
+                                 spotPrice: product.spotPrice,
+                                 id: product.productId
+                                 }])
+                             }}
+                             />
+                                )
+                              }
+                             }
+                            )}
+                          </div>
+                        </div>
+                      
+                        <div className='home-show-product-group-container'>
+                          <h2>Produtos de casa:</h2>
+                          <div className='home-show-product-group'>     
+                          {  products.map(product => 
+                             {
+                              if(product.group === 'Produtos de casa'){
+                                return(
+                                  <CardProducts 
+                             ativeReload={()=> ''}
+                             group={product.group}
+                             forwardPrice={product.forwardPrice}
+                             frete={product.frete}
+                             namePhoto={product.namePhoto}
+                             spotPrice={product.spotPrice}
+                             title={product.title}
+                             pricePrevious= {product.pricePrevious}
+                             key={product.productId}
+                             productId={product.productId}
+                             userLogged={userId}
+                             addProduct={() => {
+                                 setProductsAddedToShoppingCart([...productsAddedToShoppingCart,{
+                                 title : product.title,
+                                 forwardPrice: product.forwardPrice,
+                                 frete: product.frete,
+                                 spotPrice: product.spotPrice,
+                                 id: product.productId
+                                 }])
+                             }}
+                             />
+                                )
+                              }
+                             }
+                            )}
+                          </div>
+                        </div>
+                        
+                        <div className='home-show-product-group-container'>
+                          <h2>Papelaria:</h2>
+                          <div className='home-show-product-group'>     
+                          {  products.map(product => 
+                             {
+                              if(product.group === 'Papelaria'){
+                                return(
+                                  <CardProducts 
+                             ativeReload={()=> ''}
+                             group={product.group}
+                             forwardPrice={product.forwardPrice}
+                             frete={product.frete}
+                             namePhoto={product.namePhoto}
+                             spotPrice={product.spotPrice}
+                             title={product.title}
+                             pricePrevious= {product.pricePrevious}
+                             key={product.productId}
+                             productId={product.productId}
+                             userLogged={userId}
+                             addProduct={() => {
+                                 setProductsAddedToShoppingCart([...productsAddedToShoppingCart,{
+                                 title : product.title,
+                                 forwardPrice: product.forwardPrice,
+                                 frete: product.frete,
+                                 spotPrice: product.spotPrice,
+                                 id: product.productId
+                                 }])
+                             }}
+                             />
+                                )
+                              }
+                             }
+                            )}
+                          </div>
+                        </div>
+                        
+                      </>     
                ) : (
                  <div className="menu_none">
                    <h1>Não há produtos cadastrados.</h1>
