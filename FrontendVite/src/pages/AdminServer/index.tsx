@@ -27,6 +27,7 @@ function AdminServer(){
   const [showListCustomeOrder, setShowListCustomeOrder] = useState(false)
   const [showFormCardProduct, setShowFormCardProduct] = useState(false)
 
+  const [inputSearchValue, setInputSearchValue] = useState('')
   
   async function LoadingCustomerOrders(){
     const customer : arrayCustumerOders = await FindCustumerOrders()
@@ -61,7 +62,7 @@ function AdminServer(){
   
   return (
     <>
-      <Headers/>
+      <Headers search={(event: string)=> setInputSearchValue(event)}/>
       {reload && <h1>{reload}</h1>}
       <div className='admin-register-product-container'>
         {showListCustomeOrder ? (

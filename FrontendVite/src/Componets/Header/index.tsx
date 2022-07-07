@@ -3,14 +3,15 @@ import './styles.css'
 import Search from '../../assets/images/search_icon.svg'
 import userMenu from '../../assets/images/user-enter1.svg'
 
-import { useEffect, useState } from 'react'
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 import {  FindUsers, User } from '../../services/User'
 import { FindImage, DataImageType } from '../../services/Images'
 
 import { useNavigate } from 'react-router-dom'
 
 type HeaderProps = {
-  userId?: string
+  userId?: string,
+  search: (event: string) => void 
 }
 
 type arrayUsers = User[]
@@ -18,9 +19,12 @@ type arrayUsers = User[]
 
 type arrayDataImageType = DataImageType[]
 
-function Header({ userId }: HeaderProps) {
+function Header({ userId , search}: HeaderProps) {
   const [user, setUser] = useState<User | null>()
   const [imageUser, setImageUser] = useState('')
+  const [inputSearchValue, setInputSearchValue] = useState('')
+
+
   const navegate = useNavigate()
 
   async function getUser() {
@@ -43,6 +47,10 @@ function Header({ userId }: HeaderProps) {
     }
   }
 
+  function handleSearchInputValue(event : ChangeEvent<HTMLInputElement>){
+    setInputSearchValue(event.target.value)
+  }
+
   useEffect(() => {
     getUser()
   }, [])
@@ -55,14 +63,22 @@ function Header({ userId }: HeaderProps) {
   return (
     <div id="header_container">
       <section className="logo">Kassinha Variedades</section>
-      <section className="pesquisa">
-        <div className="search">
-          <input type="text" placeholder="  o que você esta procurando?" />
-          <button>
-            <img src={Search} alt="pesquisa" />
-          </button>
-        </div>
-      </section>
+        <section className="pesquisa">
+          <div className="search">
+            <input 
+            type="text"  
+            name='search' 
+            placeholder="  o que você esta procurando?"
+            onChange={handleSearchInputValue} 
+            />
+            <button onClick={()=> { 
+              if(inputSearchValue){ 
+                search(inputSearchValue)
+              }}}>
+              <img src={Search} alt="pesquisa" />
+            </button>
+          </div>
+        </section>
       <section className="user_menu">
         <div className="show_user_info">
           {user ? (

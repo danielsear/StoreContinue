@@ -51,7 +51,10 @@ function Home() {
    const [message, setMessage] = useState<DataPaymentType>()
    const [refreshingPage, setRefreshingPage] = useState(false)
 
+   const [inputSearchValue, setInputSearchValue] = useState('')
   
+   console.log(inputSearchValue);
+   
 
   async function ShowProducts() {
     const products : arrayProducts = await FindProducts()
@@ -165,12 +168,53 @@ function Home() {
 
   return (
     <>
-      <Header userId={userId} />
+      <Header 
+      userId={userId}  
+      search={(event: string)=> setInputSearchValue(event)}
+      />
       <div className='home-container'>
         {!finalizingThePurchase ? (
                <div className='home-show-product-container'>
                {products ? (
                       <>
+                        {inputSearchValue && (
+                          <div className='home-show-product-group-container'>
+                            <h2>Pesquisa:</h2>
+                          <div className='home-show-product-group'>     
+                          { products.map(product => 
+                             {
+                              if(product.title === inputSearchValue){
+                                return(
+                                  <CardProducts 
+                             ativeReload={()=> ''}
+                             group={product.group}
+                             forwardPrice={product.forwardPrice}
+                             frete={product.frete}
+                             namePhoto={product.namePhoto}
+                             spotPrice={product.spotPrice}
+                             title={product.title}
+                             pricePrevious= {product.pricePrevious}
+                             key={product.productId}
+                             productId={product.productId}
+                             userLogged={userId}
+                             addProduct={() => {
+                                 setProductsAddedToShoppingCart([...productsAddedToShoppingCart,{
+                                 title : product.title,
+                                 forwardPrice: product.forwardPrice,
+                                 frete: product.frete,
+                                 spotPrice: product.spotPrice,
+                                 id: product.productId
+                                 }])
+                             }}
+                             />
+                                )
+                              }
+                             }
+                            )}
+                             <h2 >Nenhum produto encontrado.</h2>
+                          </div>
+                        </div>
+                        )}
                         <div className='home-show-product-group-container'>
                           <h2>Brinquedos:</h2>
                           <div className='home-show-product-group'>     
