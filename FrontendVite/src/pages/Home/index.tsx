@@ -26,8 +26,6 @@ type ProductsShoppingCartType = {
   id?: string
 }
 
-
-
 type arrayProductsShoppingCartType = ProductsShoppingCartType[]
 
 function Home() {
@@ -51,10 +49,19 @@ function Home() {
    const [message, setMessage] = useState<DataPaymentType>()
    const [refreshingPage, setRefreshingPage] = useState(false)
 
-   const [inputSearchValue, setInputSearchValue] = useState('')
-  
-   console.log(inputSearchValue);
+   const [inputSearchValue, setInputSearchValue] = useState<arrayProducts>([{
+    forwardPrice:' ',
+    group:'',
+    pricePrevious: '',
+    spotPrice: '',
+    title: ''
+   }])
+   const [activeSearchProduct, setActiveSearchProduct] = useState(false)
+   const [showActiveSearchProduct, setShowActiveSearchProduct] = useState(false)
+
    
+
+  
 
   async function ShowProducts() {
     const products : arrayProducts = await FindProducts()
@@ -161,6 +168,48 @@ function Home() {
     }
   }
 
+  function handleInputSearchValue(event : string){
+    const eventsplit = event.split(' ')
+    console.log(eventsplit);
+    
+    setShowActiveSearchProduct(false)
+    if(products){
+      setActiveSearchProduct(true)
+      const inputSearch = products.map(product => {
+        const titlesplit = product.title.split(' ')
+        titlesplit.map(titleText => {
+          eventsplit.map(eventText =>{
+            if(eventText === titleText){            
+              if(inputSearchValue){
+                console.log(product.title);
+                
+                setInputSearchValue([...inputSearchValue,{
+                  forwardPrice: product.forwardPrice,
+                  group: product.group,
+                  pricePrevious: product.pricePrevious,
+                  productId: product.productId,
+                  spotPrice: product.spotPrice,
+                  title: product.title,
+                  namePhoto: product.namePhoto,
+                  userLogged: product.userLogged
+                }])
+              }
+              setShowActiveSearchProduct(true)
+            }
+          } )
+        })
+        
+      })
+    }
+  }
+
+  function handleTimeCloseSearch(){
+    setTimeout(() => {
+    setActiveSearchProduct(false)
+    }, 3000);
+  }
+console.log(inputSearchValue);
+
 
   useEffect(()=>{
     ShowProducts()
@@ -170,51 +219,59 @@ function Home() {
     <>
       <Header 
       userId={userId}  
-      search={(event: string)=> setInputSearchValue(event)}
+      search={(event: string)=> handleInputSearchValue(event)}
       />
       <div className='home-container'>
         {!finalizingThePurchase ? (
                <div className='home-show-product-container'>
                {products ? (
                       <>
-                        {inputSearchValue && (
+                        {activeSearchProduct && (
                           <div className='home-show-product-group-container'>
                             <h2>Pesquisa:</h2>
-                          <div className='home-show-product-group'>     
-                          { products.map(product => 
-                             {
-                              if(product.title === inputSearchValue){
-                                return(
+                          <div className='home-show-product-group'>   
+                           {showActiveSearchProduct ? (
+                            inputSearchValue.map(inputSearchValue =>{
+                              if(inputSearchValue.title !== ''){
+                                return (
                                   <CardProducts 
-                             ativeReload={()=> ''}
-                             group={product.group}
-                             forwardPrice={product.forwardPrice}
-                             frete={product.frete}
-                             namePhoto={product.namePhoto}
-                             spotPrice={product.spotPrice}
-                             title={product.title}
-                             pricePrevious= {product.pricePrevious}
-                             key={product.productId}
-                             productId={product.productId}
-                             userLogged={userId}
-                             addProduct={() => {
-                                 setProductsAddedToShoppingCart([...productsAddedToShoppingCart,{
-                                 title : product.title,
-                                 forwardPrice: product.forwardPrice,
-                                 frete: product.frete,
-                                 spotPrice: product.spotPrice,
-                                 id: product.productId
-                                 }])
-                             }}
-                             />
+                                  ativeReload={()=> ''}
+                                  group={inputSearchValue.group}
+                                  forwardPrice={inputSearchValue.forwardPrice}
+                                  frete={inputSearchValue.frete}
+                                  namePhoto={inputSearchValue.namePhoto}
+                                  spotPrice={inputSearchValue.spotPrice}
+                                  title={inputSearchValue.title}
+                                  pricePrevious= {inputSearchValue.pricePrevious}
+                                  key={inputSearchValue.productId}
+                                  productId={inputSearchValue.productId}
+                                  userLogged={userId}
+                                  addProduct={() => {
+                                      setProductsAddedToShoppingCart(
+                                       [...productsAddedToShoppingCart,{
+                                      title : inputSearchValue.title,
+                                      forwardPrice: inputSearchValue.forwardPrice,
+                                      frete: inputSearchValue.frete,
+                                      spotPrice: inputSearchValue.spotPrice,
+                                      id: inputSearchValue.productId
+                                      }])
+                                  }}
+                                  />
                                 )
                               }
-                             }
-                            )}
-                             <h2 >Nenhum produto encontrado.</h2>
+                            })
+                           ): (
+                            <>
+                              {handleTimeCloseSearch()}
+                              <h2>Item não encontrado</h2>
+                            </>
+                            
+                           )}
+                      
                           </div>
                         </div>
                         )}
+
                         <div className='home-show-product-group-container'>
                           <h2>Brinquedos:</h2>
                           <div className='home-show-product-group'>     
