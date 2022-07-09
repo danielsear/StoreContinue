@@ -27,7 +27,19 @@ function AdminServer(){
   const [showListCustomeOrder, setShowListCustomeOrder] = useState(false)
   const [showFormCardProduct, setShowFormCardProduct] = useState(false)
 
-  const [inputSearchValue, setInputSearchValue] = useState('')
+ 
+  const [inputSearchValue, setInputSearchValue] = useState<arrayProducts>([{
+    forwardPrice:' ',
+    group:'',
+    pricePrevious: '',
+    spotPrice: '',
+    title: ''
+   }])
+   const [SearchValue, setSearchValue] = useState(['init'])
+
+   const [activeSearchProduct, setActiveSearchProduct] = useState(false)
+   const [showActiveSearchProduct, setShowActiveSearchProduct] = useState(false)
+
   
   async function LoadingCustomerOrders(){
     const customer : arrayCustumerOders = await FindCustumerOrders()
@@ -54,6 +66,86 @@ function AdminServer(){
     }, 3000);
   }
 
+  function handleInputSearchValue(event : string){
+    const eventsplit = event.split(' ')
+
+    
+    setShowActiveSearchProduct(false)
+    if(products){
+
+      setActiveSearchProduct(true)
+
+       products.map(product => {
+        const titlesplit = product.title.split(' ')
+         
+
+          eventsplit.map(eventText =>{
+            titlesplit.map(titleText => {
+              
+             const titlesplitlowercase = titleText.toLowerCase()
+             const eventsplitlowercase = eventText.toLowerCase()
+
+             const countString= eventsplitlowercase.length
+
+             if(countString > 3){
+
+              if(eventsplitlowercase === titlesplitlowercase){ 
+                
+              setShowActiveSearchProduct(true)
+                
+                if(inputSearchValue){
+
+                  const confirme = SearchValue.map(text => {    
+                    const arrayText = text.split(' ')
+                   
+                    const consult=  arrayText.map(text =>{
+                        if(text === titlesplitlowercase){
+                          return true
+                        }
+                      })
+                    const confirmConsult = consult.find(text => text === true)
+                    if(confirmConsult){
+                      return confirmConsult
+                    }else{
+                      false
+                    }
+                 }) 
+                 
+                 const confirmePosition = confirme.find(text => text === true)
+                 if(confirmePosition){             
+                  return
+                 }
+
+                 confirme.map(reset => false)
+
+                 setSearchValue([...SearchValue, product.title.toLowerCase()]) 
+
+                  setInputSearchValue([...inputSearchValue,{
+                    forwardPrice: product.forwardPrice,
+                    group: product.group,
+                    pricePrevious: product.pricePrevious,
+                    productId: product.productId,
+                    spotPrice: product.spotPrice,
+                    title: product.title,
+                    namePhoto: product.namePhoto,
+                    userLogged: product.userLogged
+                  }])                             
+              }     
+            }
+             }           
+          } )
+        })
+      })
+    }
+  }
+
+  function handleTimeCloseSearch(){
+    setTimeout(() => {
+    setActiveSearchProduct(false)
+    }, 3000);
+  }
+
+
   useEffect(()=>{
     ShowProducts()
     
@@ -62,7 +154,8 @@ function AdminServer(){
   
   return (
     <>
-      <Headers search={(event: string)=> setInputSearchValue(event)}/>
+      <Headers  search={(event: string)=> handleInputSearchValue(event)}
+/>
       {reload && <h1>{reload}</h1>}
       <div className='admin-register-product-container'>
         {showListCustomeOrder ? (
@@ -91,8 +184,42 @@ function AdminServer(){
         )}
         </div>
         {!showListCustomeOrder ? (
-          <div className='show-product-container'>
-          {products ? (
+          <>
+            {activeSearchProduct && (
+                          <div className='home-show-product-group-container'>
+                            <h2>Pesquisa:</h2>
+                          <div className='home-show-product-group'>   
+                           {showActiveSearchProduct ? (
+                            inputSearchValue.map(inputSearchValue =>{
+                              if(inputSearchValue.title !== ''){
+                                return (
+                                  <CardProducts 
+                                  ativeReload={()=> ''}
+                                  group={inputSearchValue.group}
+                                  forwardPrice={inputSearchValue.forwardPrice}
+                                  frete={inputSearchValue.frete}
+                                  namePhoto={inputSearchValue.namePhoto}
+                                  spotPrice={inputSearchValue.spotPrice}
+                                  title={inputSearchValue.title}
+                                  pricePrevious= {inputSearchValue.pricePrevious}
+                                  key={inputSearchValue.productId}
+                                  productId={inputSearchValue.productId}
+                                  />
+                                )
+                              }
+                            })
+                           ): (
+                            <>
+                              {handleTimeCloseSearch()}
+                              <h2>Item não encontrado</h2>
+                            </>    
+                           )}
+                      
+                          </div>
+                        </div>
+                        )}
+            <div className='show-product-container'>
+              {products ? (
                  products.map(product => 
                   <CardProducts 
                   forwardPrice={product.forwardPrice}
@@ -118,6 +245,7 @@ function AdminServer(){
           </div>
           )}
           </div>
+          </>
         ):(
          <div>
           <h1>Listando Pedidos:</h1>

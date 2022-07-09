@@ -48,7 +48,7 @@ function Header({ userId , search}: HeaderProps) {
   }
 
   function handleSearchInputValue(event : ChangeEvent<HTMLInputElement>){
-    setInputSearchValue(event.target.value)
+    setInputSearchValue(event.target.value)  
   }
 
   useEffect(() => {

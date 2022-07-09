@@ -84,11 +84,11 @@ function ListCustomeOrder(data : CustumerOdersType){
                   <div className='ListCustomeOrder-show-info-customerOrders-formOfPayment-text'>
                     <h3>Preço total da compra a pagar :</h3>
                     <div>
-                     Preço à vista:  {spotPrice}
+                     Preço à vista:  {spotPrice} reais
                     </div>
                     {formOfPayment !== 'PIX' && (
                       <div>
-                      Preço à prazo:  {forwardPrice}
+                      Preço à prazo:  {forwardPrice} reais
                      </div>
                     )}
                   </div>

@@ -56,6 +56,8 @@ function Home() {
     spotPrice: '',
     title: ''
    }])
+   const [SearchValue, setSearchValue] = useState(['init'])
+
    const [activeSearchProduct, setActiveSearchProduct] = useState(false)
    const [showActiveSearchProduct, setShowActiveSearchProduct] = useState(false)
 
@@ -170,35 +172,67 @@ function Home() {
 
   function handleInputSearchValue(event : string){
     const eventsplit = event.split(' ')
-    console.log(eventsplit);
     
     setShowActiveSearchProduct(false)
     if(products){
       setActiveSearchProduct(true)
-      const inputSearch = products.map(product => {
+       products.map(product => {
         const titlesplit = product.title.split(' ')
-        titlesplit.map(titleText => {
+ 
           eventsplit.map(eventText =>{
-            if(eventText === titleText){            
-              if(inputSearchValue){
-                console.log(product.title);
-                
-                setInputSearchValue([...inputSearchValue,{
-                  forwardPrice: product.forwardPrice,
-                  group: product.group,
-                  pricePrevious: product.pricePrevious,
-                  productId: product.productId,
-                  spotPrice: product.spotPrice,
-                  title: product.title,
-                  namePhoto: product.namePhoto,
-                  userLogged: product.userLogged
-                }])
-              }
-              setShowActiveSearchProduct(true)
+            titlesplit.map(titleText => {
+              
+             const titlesplitlowercase = titleText.toLowerCase()
+             const eventsplitlowercase = eventText.toLowerCase()
+
+             const countString= eventsplitlowercase.length
+
+             if(countString > 3){
+
+              if(eventsplitlowercase === titlesplitlowercase){ 
+                setShowActiveSearchProduct(true)
+                if(inputSearchValue){
+
+                  const confirme = SearchValue.map(text => {    
+                    const arrayText = text.split(' ')
+                   
+                    const consult=  arrayText.map(text =>{
+                        if(text === titlesplitlowercase){
+                          return true
+                        }
+                      })
+                    const confirmConsult = consult.find(text => text === true)
+                    if(confirmConsult){
+                      return confirmConsult
+                    }else{
+                      false
+                    }
+                 }) 
+                 
+                 const confirmePosition = confirme.find(text => text === true)
+                 if(confirmePosition){             
+                  return
+                 }
+
+                 confirme.map(reset => false)
+
+                 setSearchValue([...SearchValue, product.title.toLowerCase()]) 
+
+                  setInputSearchValue([...inputSearchValue,{
+                    forwardPrice: product.forwardPrice,
+                    group: product.group,
+                    pricePrevious: product.pricePrevious,
+                    productId: product.productId,
+                    spotPrice: product.spotPrice,
+                    title: product.title,
+                    namePhoto: product.namePhoto,
+                    userLogged: product.userLogged
+                  }])                             
+              }     
             }
+             }           
           } )
         })
-        
       })
     }
   }
@@ -208,7 +242,7 @@ function Home() {
     setActiveSearchProduct(false)
     }, 3000);
   }
-console.log(inputSearchValue);
+
 
 
   useEffect(()=>{
@@ -231,7 +265,7 @@ console.log(inputSearchValue);
                             <h2>Pesquisa:</h2>
                           <div className='home-show-product-group'>   
                            {showActiveSearchProduct ? (
-                            inputSearchValue.map(inputSearchValue =>{
+                            inputSearchValue.map(inputSearchValue =>{      
                               if(inputSearchValue.title !== ''){
                                 return (
                                   <CardProducts 
@@ -264,8 +298,7 @@ console.log(inputSearchValue);
                             <>
                               {handleTimeCloseSearch()}
                               <h2>Item não encontrado</h2>
-                            </>
-                            
+                            </>    
                            )}
                       
                           </div>
