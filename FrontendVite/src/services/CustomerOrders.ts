@@ -7,7 +7,8 @@ export type CustumerOdersType = {
   paymentId: string,
   spotPrice:string,
   forwardPrice?: string,
-  createAt: string
+  createAt: string,
+  
 }
 export type CustumerOderType = {
   nameProducts: Array<string>,

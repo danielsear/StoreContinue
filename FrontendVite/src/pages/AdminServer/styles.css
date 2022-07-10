@@ -54,3 +54,11 @@
 .admin-showFormCardProduct{
   margin: 1rem 1rem;
 }
+
+.showImagePixVoucher {
+  margin: 2rem 2rem;
+}
+.showImagePixVoucher img{
+  width: 500px;
+  height: 500px;
+}

@@ -134,13 +134,8 @@ function CardProducts({
           <div className='card-price-installment'>ou até 3x de R$ {forwardPrice} reais sem juros</div>
           {userLogged && (
             <div className='card-buy-products'>
-              <div>
                {!disableButtonAddProduct &&  <button className='card-button-add-product'
                 onClick={onclickAddProduct}>Adicionar ao carrinho</button>}
-              </div>
-              <div>
-                <button className='card-button-buy-product' >Comprar</button>
-              </div>
             </div>
           )}
         </div>

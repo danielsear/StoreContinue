@@ -1,22 +1,41 @@
 import './styles.css'
 
-import {CustumerOdersType} from '../../services/CustomerOrders'
 import { FindUsers, User } from '../../services/User'
 
 import { useEffect, useState } from 'react'
 import { FindImage, DataImageType } from '../../services/Images'
+import { useNavigate } from 'react-router'
 
 type arrayUser = User[]
 type arrayImages = DataImageType[]
 
+type ListCustomeOrderType = {
+  nameProducts: Array<string>,
+    userId: string,
+    proofOfPaymentPhoto?: string | undefined,
+    formOfPayment: string,
+    paymentId: string,
+    spotPrice: string,
+    forwardPrice?: string | undefined,
+    createAt: string,
+    showPixVoucher: (event: string) => void
+}
 
-function ListCustomeOrder(data : CustumerOdersType){
-  const {formOfPayment, nameProducts,paymentId,userId,proofOfPaymentPhoto, spotPrice, forwardPrice,createAt} = data
+
+function ListCustomeOrder(data : ListCustomeOrderType){
+  const {formOfPayment,
+     nameProducts,
+     userId,
+     proofOfPaymentPhoto,
+      spotPrice, 
+      forwardPrice,
+      createAt,
+      showPixVoucher
+    } = data
 
   const [user, setUser]= useState<User>()
   const [image, setImage]= useState<DataImageType>()
-  const [showImage, setShowImage]= useState(false)
-  
+
 
     const d = new Date(createAt);
     const date = d.toLocaleDateString("pt-br", {
@@ -42,21 +61,7 @@ function ListCustomeOrder(data : CustumerOdersType){
     }
   }
 
-  function handleShowPhoto(){
-    if(!showImage){
-      const fild = document.querySelector('.ListCustomeOrder-show-info-customerOrders-formOfPayment-img')
-      fild?.classList.remove('ListCustomeOrder-show-info-customerOrders-formOfPayment-img')
-      fild?.classList.add('showPhoto')
-      setShowImage(prev => !prev)
-    }else{
-      const fild = document.querySelector('.showPhoto')
-      fild?.classList.remove('showPhoto')
-      fild?.classList.add('ListCustomeOrder-show-info-customerOrders-formOfPayment-img')
-      setShowImage(prev => !prev)
-    }
-    console.log(showImage);
-    
-  }
+
 
   useEffect(()=>{
     client()
@@ -100,11 +105,23 @@ function ListCustomeOrder(data : CustumerOdersType){
                   </div>
                   {formOfPayment === 'PIX' && (
                     <div className='ListCustomeOrder-show-info-customerOrders-formOfPayment-img'
-                    onClick={handleShowPhoto}
-                    >
-                       <img src={image?.url} alt={proofOfPaymentPhoto}  />
+                    onClick={() => {
+                      if(image?.url){
+                        showPixVoucher(image?.url)
+                      }
+                    }}
+                         >
+                          <img src={image?.url} alt={proofOfPaymentPhoto}  />
                     </div>
                   )}
+                  <div className='ListCustomeOrder-show-info-customerOrders-buy-button'>
+                    <div className='ListCustomeOrder-show-info-customerOrders-buy-button-register'>
+                      <button>Registrar venda.</button>
+                    </div>
+                    <div className='ListCustomeOrder-show-info-customerOrders-buy-button-cancel'>
+                      <button>Cancelar venda.</button>
+                    </div>
+                  </div>
                 </div>
            </div>
         </div>

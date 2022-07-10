@@ -40,6 +40,9 @@ function AdminServer(){
    const [activeSearchProduct, setActiveSearchProduct] = useState(false)
    const [showActiveSearchProduct, setShowActiveSearchProduct] = useState(false)
 
+   const [showImagePixVoucher, setShowImagePixVoucher] = useState('')
+
+
   
   async function LoadingCustomerOrders(){
     const customer : arrayCustumerOders = await FindCustumerOrders()
@@ -145,6 +148,10 @@ function AdminServer(){
     }, 3000);
   }
 
+  function handleShowPixVoucher(event: string){
+    setShowImagePixVoucher(event)
+  }
+
 
   useEffect(()=>{
     ShowProducts()
@@ -160,7 +167,10 @@ function AdminServer(){
       <div className='admin-register-product-container'>
         {showListCustomeOrder ? (
            <div className='admin-register-product' >
-               <button onClick={() =>setShowListCustomeOrder(prev => !prev) }
+               <button onClick={() => {
+                setShowListCustomeOrder(prev => !prev)
+                setShowImagePixVoucher('')
+               } }
                >Voltar</button>
            </div>
         ): (
@@ -249,21 +259,27 @@ function AdminServer(){
         ):(
          <div>
           <h1>Listando Pedidos:</h1>
-           {arrayCustomerOrders && arrayCustomerOrders.length>0 ? (
+           {arrayCustomerOrders && arrayCustomerOrders.length>0 && !showImagePixVoucher && (
             arrayCustomerOrders?.map(customer => (
               <ListCustomeOrder 
-                formOfPayment={customer.formOfPayment}
-                nameProducts={customer.nameProducts}
-                paymentId={customer.paymentId}
-                userId={customer.userId}
-                proofOfPaymentPhoto={customer.proofOfPaymentPhoto}
-                spotPrice={customer.spotPrice}
-                forwardPrice={customer.forwardPrice}
-                createAt={customer.createAt}
-                key={customer.paymentId}
-              />
+              formOfPayment={customer.formOfPayment}
+              nameProducts={customer.nameProducts}
+              paymentId={customer.paymentId}
+              userId={customer.userId}
+              proofOfPaymentPhoto={customer.proofOfPaymentPhoto}
+              spotPrice={customer.spotPrice}
+              forwardPrice={customer.forwardPrice}
+              createAt={customer.createAt}
+              key={customer.paymentId}
+              showPixVoucher={handleShowPixVoucher}
+            />
             ))
-           ) : (
+           ) || showImagePixVoucher && (
+            <div className='showImagePixVoucher'>
+              <h3>Comprovante de pagamento PIX</h3>
+              <img src={showImagePixVoucher} alt="Comprovante de pagamento." />
+            </div>
+           ) || (
             <div>
               <h2>Nenhum pedido cadastrado.</h2>
             </div>

@@ -97,6 +97,7 @@ routes.post('/delete-user/:id', async (req, res) => {
 
 routes.get('/products', async (req, res) => {
   const products = await Product.find()
+
   return res.json(products)
 })
 

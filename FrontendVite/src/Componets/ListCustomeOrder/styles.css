@@ -52,3 +52,35 @@
   width: 17rem;
   height: 17rem;
 }
+
+.ListCustomeOrder-show-info-customerOrders-buy-button{
+  display: flex;
+  flex-direction: column;
+  margin-right: 1rem;
+}
+.ListCustomeOrder-show-info-customerOrders-buy-button-register button{
+  border: 1px solid #202020;
+  margin-bottom: 1rem;
+    padding: 1rem;
+    color: #10a310;
+    background: #fff;
+    transition: 1s;
+}
+.ListCustomeOrder-show-info-customerOrders-buy-button-register button:hover{
+  background-color: #10a310;
+  color: #fff;
+  border: none;
+}
+.ListCustomeOrder-show-info-customerOrders-buy-button-cancel button{
+  border: 1px solid #202020;
+  margin-bottom: 1rem;
+    padding: 1rem;
+    color: #a84534;
+    background: #fff;
+    transition: 1s;
+}
+.ListCustomeOrder-show-info-customerOrders-buy-button-cancel button:hover{
+  background-color: #a84534;
+  color: #fff;
+  border: none;
+}

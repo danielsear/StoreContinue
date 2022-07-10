@@ -100,10 +100,3 @@ background-color: red;
     background: #fff;
     border: 1px solid rgba(77, 57, 57, 0.303);
 }
-.card-button-buy-product{
-margin-left: .5rem;
-padding: .255rem;
-font-size: 1rem;
-background: #04d483;;
-border: 1px solid rgba(49, 77, 27, 0.303);
-}
