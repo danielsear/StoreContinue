@@ -100,3 +100,10 @@ background-color: red;
     background: #fff;
     border: 1px solid rgba(77, 57, 57, 0.303);
 }
+
+.card-product-message{
+  border: none;
+  background: #04d483;
+  color: #fff;
+  padding: .5rem;
+}

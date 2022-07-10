@@ -47,8 +47,15 @@ function CardProducts({
   ativeReload
 } : UserProduct){
   const [img, setImg] = useState<DataImageType>()
-  const [editFildProduct, setEditFildProduct] = useState(true)
-  const [disableButtonAddProduct,setTisableButtonAddProduct] = useState(false)
+  const [editFildProduct, setEditFildProduct] = useState(false)
+  const [disableButtonAddProduct,setDisableButtonAddProduct] = useState(false)
+  const [message,setMessage] = useState({
+    error: false,
+    message: '',
+    active: false
+  })
+
+  
 
   
   async function ShowImage(){
@@ -61,6 +68,13 @@ function CardProducts({
   async function handleDeleteProduct(){
     if(productId){
       const deleteProduct = await DeleteProduct(productId)
+      console.log(deleteProduct);
+      
+      setMessage({
+        error: deleteProduct.error,
+        message: deleteProduct.message,
+        active: true
+      })
       ativeReload()
       /*error ao deletar imagem
         if(namePhoto){
@@ -86,7 +100,7 @@ function CardProducts({
   }
 
   function onclickAddProduct(){
-    setTisableButtonAddProduct(true)
+    setDisableButtonAddProduct(true)
     if(addProduct){
       addProduct()
     }
@@ -99,8 +113,14 @@ function CardProducts({
 
   return (
     <div className='init-card-container'>
-      {editFildProduct ? (
-          <div className='card-container'>
+      
+      {!editFildProduct ? (
+        <div className='card-container'>
+              {message.active && (
+                    <div className='card-product-message'>
+                      {message.message}
+                    </div>
+              )}
           <div className='card-image'>
             <img src={img?.url} alt={img?.name}/>
           </div>

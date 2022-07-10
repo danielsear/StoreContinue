@@ -10,7 +10,21 @@
 }
 
 .admin-register-product{
+  display: flex;
   margin: 1rem 1rem;
+}
+.admin-register-product div{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 1.25rem;
+  padding: 1rem;
+  margin-left: 25rem;
+  border-radius: .5rem;
+
+  color: #fff;
+  background: green;
 }
 
 .admin-register-product-container{

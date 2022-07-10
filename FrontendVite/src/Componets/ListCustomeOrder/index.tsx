@@ -4,7 +4,8 @@ import { FindUsers, User } from '../../services/User'
 
 import { useEffect, useState } from 'react'
 import { FindImage, DataImageType } from '../../services/Images'
-import { useNavigate } from 'react-router'
+import { DeleteCustomerOrders } from '../../services/CustomerOrders'
+
 
 type arrayUser = User[]
 type arrayImages = DataImageType[]
@@ -19,6 +20,7 @@ type ListCustomeOrderType = {
     forwardPrice?: string | undefined,
     createAt: string,
     showPixVoucher: (event: string) => void
+    showMessageCancelOrSellProduct: (event: {error: boolean, message: string, active: boolean}) => void
 }
 
 
@@ -30,7 +32,9 @@ function ListCustomeOrder(data : ListCustomeOrderType){
       spotPrice, 
       forwardPrice,
       createAt,
-      showPixVoucher
+      showPixVoucher,
+      showMessageCancelOrSellProduct,
+      paymentId
     } = data
 
   const [user, setUser]= useState<User>()
@@ -61,6 +65,14 @@ function ListCustomeOrder(data : ListCustomeOrderType){
     }
   }
 
+ async function handleCancelProductSale(){
+    const deleteProductSale : {error: boolean, message: string } = await DeleteCustomerOrders(paymentId)
+    showMessageCancelOrSellProduct({
+      error: deleteProductSale.error,
+      message: deleteProductSale.message,
+      active: true
+    })
+  }
 
 
   useEffect(()=>{
@@ -119,7 +131,9 @@ function ListCustomeOrder(data : ListCustomeOrderType){
                       <button>Registrar venda.</button>
                     </div>
                     <div className='ListCustomeOrder-show-info-customerOrders-buy-button-cancel'>
-                      <button>Cancelar venda.</button>
+                      <button
+                      onClick={handleCancelProductSale}
+                      >Cancelar venda.</button>
                     </div>
                   </div>
                 </div>

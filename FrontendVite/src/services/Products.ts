@@ -55,13 +55,17 @@ async function UpdateProduct(data: ProductsType) {
     .catch(err => console.error(err))
 }
 
-async function DeleteProduct(productId:string) {
+async function DeleteProduct(productId:string): Promise<{error: boolean, message: string}> {
    return await fetch(`http://localhost:3333/delete-product/${productId}`,{
-      method: 'POST',
+      method: 'GET',
       headers:{
         'Content-Type': 'application/json'
       }
-    }).then().catch(err=> console.error(err))
+    }).then(res => res.json())
+    .then(data =>{
+      return data
+    })
+    .catch(err=> console.error(err))
 }
 
 export { FindProducts,CreateProduct, UpdateProduct, DeleteProduct}

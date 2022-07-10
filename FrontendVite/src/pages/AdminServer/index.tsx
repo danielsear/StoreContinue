@@ -41,6 +41,12 @@ function AdminServer(){
    const [showActiveSearchProduct, setShowActiveSearchProduct] = useState(false)
 
    const [showImagePixVoucher, setShowImagePixVoucher] = useState('')
+   const [messageCancelOrSellProduct, setMessageCancelOrSellProduct] = useState({
+    error: false,
+    message: '',
+    active: false
+   })
+
 
 
   
@@ -60,6 +66,12 @@ function AdminServer(){
     setTimeout(() => {
       setReload(prev => !prev)
       setShowFormCardProduct(prev => !prev)
+      setMessageCancelOrSellProduct({
+        error: false,
+        message: '',
+        active: false
+       })
+      
     }, 3000);
   }
 
@@ -151,6 +163,24 @@ function AdminServer(){
   function handleShowPixVoucher(event: string){
     setShowImagePixVoucher(event)
   }
+  
+  function handleShowMessageCancelOrSellProduct(
+    event: 
+    {error: boolean, message: string, active: boolean}
+    ){
+    setMessageCancelOrSellProduct(event)
+   
+   
+    setTimeout(() => {
+      setShowListCustomeOrder(prev => !prev)
+      setMessageCancelOrSellProduct({
+        error: false,
+        message: '',
+        active: false
+       })
+       setReload(prev => !prev)
+    }, 3000);
+  }
 
 
   useEffect(()=>{
@@ -172,6 +202,9 @@ function AdminServer(){
                 setShowImagePixVoucher('')
                } }
                >Voltar</button>
+              {messageCancelOrSellProduct.active && 
+              <div>{messageCancelOrSellProduct.message}</div>
+              }
            </div>
         ): (
           <>
@@ -272,6 +305,9 @@ function AdminServer(){
               createAt={customer.createAt}
               key={customer.paymentId}
               showPixVoucher={handleShowPixVoucher}
+              showMessageCancelOrSellProduct={
+                (event) =>
+                handleShowMessageCancelOrSellProduct(event)}
             />
             ))
            ) || showImagePixVoucher && (

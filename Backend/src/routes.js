@@ -161,12 +161,22 @@ routes.get('/product/:id', async (req, res) => {
   return res.json(product)
 })
 
-routes.post('/delete-product/:id', async (req, res) => {
+routes.get('/delete-product/:id', async (req, res) => {
   const product = await Product.findOne({productId: req.params.id})
  
   await product.remove()
+  .then(()=>{
+    return res.json({
+      error: false,
+      message: 'Produto deletado com sucesso.'
+    })
+  }).catch(err => {
+    return res.json({
+      error: true,
+      message: err
+    })
+  })
 
-  return res.json('Produto deletado com sucesso.')
 })
 
 //CustomerOrders
@@ -196,6 +206,25 @@ routes.post('/customerOrders-create', async (req, res) =>{
     message: 'Pagamento cadastrado com sucesso.'
   })
 
+})
+
+routes.get('/customerOrders-delete/:id', async (req, res) => {
+  const customerOrder = await CustomerOrders.findOne({paymentId: req.params.id})
+ console.log(customerOrder);
+  await customerOrder.remove()
+  .then(()=>{
+    return res.json({
+      error: false,
+      message: 'Pedido cancelado com sucesso.'
+    })
+  }).catch(err => {
+    return res.json({
+      error: true,
+      message: err
+    })
+  })
+
+ 
 })
 
 module.exports = routes

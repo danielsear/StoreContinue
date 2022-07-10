@@ -55,4 +55,19 @@ async function FindCustumerOrders() {
   .catch(err => console.error(err))
 }
 
-export { CreateCustomerOrders ,  FindCustumerOrders}
+async function DeleteCustomerOrders(paymentId:string) {
+  
+  return fetch(`http://localhost:3333/customerOrders-delete/${paymentId}`,{
+    method:'GET',  
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  }).then(res => res.json())
+  .then(data => { 
+    return data
+  })
+  .catch(err => console.error(err))
+
+}
+
+export { CreateCustomerOrders ,  FindCustumerOrders, DeleteCustomerOrders}
