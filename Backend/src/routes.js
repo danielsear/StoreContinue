@@ -6,6 +6,8 @@ const Image = require('./models/Image')
 const User = require('./models/User')
 const Product = require('./models/Products')
 const CustomerOrders= require('./models/CustomerOrders')
+const RegisteredSales= require('./models/RegisteredSales')
+
 
 
 
@@ -226,5 +228,47 @@ routes.get('/customerOrders-delete/:id', async (req, res) => {
 
  
 })
+
+//RegisteredSales
+
+routes.get('/registeredSales-list', async (req,res) =>{
+  const registeredSales = await RegisteredSales.find()
+  return res.json(registeredSales)
+})
+
+routes.post('/registeredSales-create', async (req, res) =>{
+  const {
+    title,
+    typePurchase,
+    cashPayment,
+    deferredPayment,
+    orderDate,
+    namePhoto,
+    paymentId,
+    nameUser,
+    userId,
+    } = req.body
+
+  if(req.body){
+    RegisteredSales.create({
+        title,
+      typePurchase,
+      cashPayment,
+      deferredPayment,
+      orderDate,
+      namePhoto,
+      paymentId,
+      nameUser,
+      userId,
+    })
+  }
+
+  res.json({
+    error: false,
+    message: 'Venda cadastrada com sucesso.'
+  })
+
+})
+
 
 module.exports = routes

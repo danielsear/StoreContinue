@@ -5,6 +5,7 @@ import Footer from '../../Componets/Footer'
 import CardProducts from '../../Componets/CardProducts'
 import FormCard from '../../Componets/FormCard'
 import ListCustomeOrder from '../../Componets/ListCustomeOrder'
+import ListRegisteredSales from '../../Componets/ListRegisteredSales'
 
 
 
@@ -12,20 +13,28 @@ import { useEffect, useState } from 'react'
 
 import {FindProducts, ProductsType} from '../../services/Products'
 import { FindCustumerOrders, CustumerOdersType } from '../../services/CustomerOrders'
+import { FindRegisteredSales, RegisteredSalesType} from '../../services/RegisteredSales'
+
 
 type arrayProducts = ProductsType[]
 type arrayCustumerOders = CustumerOdersType[]
+type arrayRegisteredSales = RegisteredSalesType[]
+
 
 
 
 function AdminServer(){
   const [products, setProducts] = useState<arrayProducts>()
   const [arrayCustomerOrders, setArrayCustomerOrders] = useState<arrayCustumerOders>()
- 
-  
+  const [RegisteredSales, setRegisteredSales] = useState<arrayRegisteredSales>()
+
+
   const [reload, setReload] = useState(false)
+
   const [showListCustomeOrder, setShowListCustomeOrder] = useState(false)
   const [showFormCardProduct, setShowFormCardProduct] = useState(false)
+  const [showRegisteredSalesProduct, setShowRegisteredSalesProduct] = useState(false)
+
 
  
   const [inputSearchValue, setInputSearchValue] = useState<arrayProducts>([{
@@ -51,16 +60,27 @@ function AdminServer(){
 
   
   async function LoadingCustomerOrders(){
-    const customer : arrayCustumerOders = await FindCustumerOrders()
-    setArrayCustomerOrders(customer)
+    if(!arrayCustomerOrders){
+      const customer : arrayCustumerOders = await FindCustumerOrders()
+      setArrayCustomerOrders(customer)
+    }
     setShowListCustomeOrder(prev => !prev)
   }
   
   async function ShowProducts() {
-    const products : arrayProducts = await FindProducts()
-    setProducts(products)
+    if(!products){
+      const products : arrayProducts = await FindProducts()
+      setProducts(products)
+    }
   }
-  
+
+  async function LoadingRegisteredSales() {
+    if(!RegisteredSales){
+      const registeredSales : arrayRegisteredSales = await FindRegisteredSales()
+      setRegisteredSales(registeredSales)
+    }
+    setShowRegisteredSalesProduct(prev => !prev)
+  }
 
   const ativeReload= () => {
     setTimeout(() => {
@@ -75,7 +95,7 @@ function AdminServer(){
     }, 3000);
   }
 
-  const ativeReloadDelete = () =>{
+  const activateReloadWhenDeleteOrEdit = () =>{ 
     setTimeout(() => {
       setReload(prev => !prev)
     }, 3000);
@@ -164,20 +184,10 @@ function AdminServer(){
     setShowImagePixVoucher(event)
   }
   
-  function handleShowMessageCancelOrSellProduct(
-    event: 
-    {error: boolean, message: string, active: boolean}
-    ){
-    setMessageCancelOrSellProduct(event)
-   
-   
+  function handleActivateReloadCancelOrSellProduct(){
+
     setTimeout(() => {
       setShowListCustomeOrder(prev => !prev)
-      setMessageCancelOrSellProduct({
-        error: false,
-        message: '',
-        active: false
-       })
        setReload(prev => !prev)
     }, 3000);
   }
@@ -208,25 +218,38 @@ function AdminServer(){
            </div>
         ): (
           <>
-            <div className='admin-register-product' >
-              <button onClick={() => setShowFormCardProduct(prev => !prev)}
-              >{!showFormCardProduct ? (
-                "Cadastrar produto"
-              ): (
-                'Cancelar'
-              )}</button>
-            </div>
-            {!showFormCardProduct && (
+            {!showRegisteredSalesProduct && (
+              <div className='admin-register-product' >
+                <button onClick={() => setShowFormCardProduct(prev => !prev)}
+                >{!showFormCardProduct ? (
+                  "Cadastrar produto"
+                ): (
+                  'Cancelar'
+                )}</button>
+              </div>
+            )}
+            {!showFormCardProduct &&  !showRegisteredSalesProduct &&(             
                <div className='admin-register-product' >
                   <button onClick={
                     LoadingCustomerOrders
                   }>Mostrar lista de pedidos</button>
-               </div>
+               </div> 
+            )}
+            {!showFormCardProduct && !showListCustomeOrder &&(             
+              <div className='admin-register-product' >
+                <button onClick={
+                  LoadingRegisteredSales
+                }>{!showRegisteredSalesProduct ? (
+                  "Mostrar vendas"
+                ): (
+                  'Voltar'
+                )}</button>
+              </div>
             )}
           </>
         )}
         </div>
-        {!showListCustomeOrder ? (
+        {!showListCustomeOrder && !showRegisteredSalesProduct && (
           <>
             {activeSearchProduct && (
                           <div className='home-show-product-group-container'>
@@ -237,7 +260,7 @@ function AdminServer(){
                               if(inputSearchValue.title !== ''){
                                 return (
                                   <CardProducts 
-                                  ativeReload={()=> ''}
+                                  activateReload={()=> ''}
                                   group={inputSearchValue.group}
                                   forwardPrice={inputSearchValue.forwardPrice}
                                   frete={inputSearchValue.frete}
@@ -275,7 +298,7 @@ function AdminServer(){
                   productId={product.productId}
                   admin={true}
                   group={product.group}
-                  ativeReload={ativeReloadDelete}
+                  activateReload={activateReloadWhenDeleteOrEdit}
                   />)
           ) : (
             <div className="menu_none">
@@ -289,7 +312,7 @@ function AdminServer(){
           )}
           </div>
           </>
-        ):(
+        )|| showListCustomeOrder && !showRegisteredSalesProduct &&(
          <div>
           <h1>Listando Pedidos:</h1>
            {arrayCustomerOrders && arrayCustomerOrders.length>0 && !showImagePixVoucher && (
@@ -305,10 +328,7 @@ function AdminServer(){
               createAt={customer.createAt}
               key={customer.paymentId}
               showPixVoucher={handleShowPixVoucher}
-              showMessageCancelOrSellProduct={
-                (event) =>
-                handleShowMessageCancelOrSellProduct(event)}
-            />
+              activateReload={handleActivateReloadCancelOrSellProduct}/>
             ))
            ) || showImagePixVoucher && (
             <div className='showImagePixVoucher'>
@@ -321,7 +341,12 @@ function AdminServer(){
             </div>
            )}
          </div>
-        )} 
+        )|| !showListCustomeOrder && showRegisteredSalesProduct &&(
+          <div>
+            <ListRegisteredSales/>
+          </div>
+        )
+        } 
       <Footer/>
     </>
   )

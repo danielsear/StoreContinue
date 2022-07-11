@@ -5,6 +5,8 @@ import { FindUsers, User } from '../../services/User'
 import { useEffect, useState } from 'react'
 import { FindImage, DataImageType } from '../../services/Images'
 import { DeleteCustomerOrders } from '../../services/CustomerOrders'
+import { CreateRegisteredSales } from '../../services/RegisteredSales'
+
 
 
 type arrayUser = User[]
@@ -20,7 +22,7 @@ type ListCustomeOrderType = {
     forwardPrice?: string | undefined,
     createAt: string,
     showPixVoucher: (event: string) => void
-    showMessageCancelOrSellProduct: (event: {error: boolean, message: string, active: boolean}) => void
+    activateReload: () => void
 }
 
 
@@ -33,13 +35,17 @@ function ListCustomeOrder(data : ListCustomeOrderType){
       forwardPrice,
       createAt,
       showPixVoucher,
-      showMessageCancelOrSellProduct,
-      paymentId
+      paymentId,
+      activateReload
     } = data
 
   const [user, setUser]= useState<User>()
   const [image, setImage]= useState<DataImageType>()
-
+  const [message, setMessage] = useState({
+    error: false,
+    message: '',
+    active: false
+  })
 
     const d = new Date(createAt);
     const date = d.toLocaleDateString("pt-br", {
@@ -65,13 +71,56 @@ function ListCustomeOrder(data : ListCustomeOrderType){
     }
   }
 
- async function handleCancelProductSale(){
+ async function handleCancelProductSale(request: string){
+
     const deleteProductSale : {error: boolean, message: string } = await DeleteCustomerOrders(paymentId)
-    showMessageCancelOrSellProduct({
-      error: deleteProductSale.error,
-      message: deleteProductSale.message,
-      active: true
-    })
+   
+    if(request === 'cancel'){
+
+      setMessage({
+        error: deleteProductSale.error,
+        message: deleteProductSale.message,
+        active: true
+      })
+      activateReload()
+    }else{
+      setMessage({
+        error: false,
+        message: 'Venda cadastrada com sucesso.',
+        active: true
+      })
+      activateReload()
+    }
+  }
+
+  async function handleRegisterProductSale() {
+    if(user?.name){
+      const registeredSales = await CreateRegisteredSales({
+        namePhoto:proofOfPaymentPhoto,
+        cashPayment: spotPrice,
+        deferredPayment: forwardPrice,
+        nameUser: user?.name,
+        userId: userId,
+        paymentId: paymentId,
+        orderDate: date,
+        title: nameProducts,
+        typePurchase: formOfPayment  
+      })
+      handleCancelProductSale('vender')
+    }else{
+      setMessage({
+        error: true,
+        message: 'Error: Comprador não encontrado, esta faltando o nome do comprador,',
+        active:true
+      })
+      setTimeout(() => {
+        setMessage({
+          error: false,
+          message: '',
+          active:false
+        })
+      }, 3000);
+    }
   }
 
 
@@ -84,6 +133,11 @@ function ListCustomeOrder(data : ListCustomeOrderType){
   return (
     <div className='ListCustomeOrder-container'>
         <div className='ListCustomeOrder-show-info-customerOrders'>
+          {message.active && (
+            <div className='ListCustomeOrder-message'>
+              {message.message}
+            </div>
+          )}
           <div className='ListCustomeOrder-show-info-customerOrders-user'>
               <div className='ListCustomeOrder-show-info-customerOrders-date'>
                 {date}
@@ -128,11 +182,15 @@ function ListCustomeOrder(data : ListCustomeOrderType){
                   )}
                   <div className='ListCustomeOrder-show-info-customerOrders-buy-button'>
                     <div className='ListCustomeOrder-show-info-customerOrders-buy-button-register'>
-                      <button>Registrar venda.</button>
+                      <button
+                      onClick={handleRegisterProductSale}
+                      >Registrar venda.</button>
                     </div>
                     <div className='ListCustomeOrder-show-info-customerOrders-buy-button-cancel'>
                       <button
-                      onClick={handleCancelProductSale}
+                      onClick={()=> {
+                        handleCancelProductSale('cancel')
+                      }}
                       >Cancelar venda.</button>
                     </div>
                   </div>

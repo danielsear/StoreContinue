@@ -10,6 +10,19 @@ import { useNavigate } from 'react-router'
 
 type arrayProducts = ProductsType[]
 
+type FormCardEditType = {
+  title: string;
+  frete?: string | undefined;
+  spotPrice: string;
+  namePhoto?: string | undefined;
+  forwardPrice: string;
+  pricePrevious: string;
+  productId?: string | undefined;
+  admin?: boolean | undefined;
+  userLogged?: string | undefined;
+  group: string;
+  activeReload : () => void
+}
 
 function FormCardEdit({
   forwardPrice,
@@ -19,8 +32,9 @@ function FormCardEdit({
   pricePrevious,
   frete, 
   productId,
-  group
-}: ProductsType){
+  group,
+  activeReload
+}: FormCardEditType){
   const [message, setMessage] = useState('')
   const navigate = useNavigate()
   const [img, setImg] = useState<File>()
@@ -66,6 +80,7 @@ function FormCardEdit({
         group: product.group
       })
       setMessage('Produto editado com sucesso.')
+      activeReload()
     }
 
   }

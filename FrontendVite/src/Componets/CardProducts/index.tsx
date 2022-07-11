@@ -26,7 +26,7 @@ type UserProduct = {
   admin?: boolean,
   userLogged?: string,
   group: string
-  ativeReload: () => void
+  activateReload: () => void
   addProduct?: () => void
 }
 
@@ -44,7 +44,7 @@ function CardProducts({
   userLogged,
   group,
   addProduct,
-  ativeReload
+  activateReload
 } : UserProduct){
   const [img, setImg] = useState<DataImageType>()
   const [editFildProduct, setEditFildProduct] = useState(false)
@@ -68,14 +68,13 @@ function CardProducts({
   async function handleDeleteProduct(){
     if(productId){
       const deleteProduct = await DeleteProduct(productId)
-      console.log(deleteProduct);
       
       setMessage({
         error: deleteProduct.error,
         message: deleteProduct.message,
         active: true
       })
-      ativeReload()
+      activateReload()
       /*error ao deletar imagem
         if(namePhoto){
         const deleteImage = await DeleteImage(namePhoto)
@@ -84,7 +83,7 @@ function CardProducts({
     }
   }
 
-
+// fazer depois, resolver o bug
   async function handleMarkLike(){
    // const infoUsersLogged : arrayUsers = await FindUsers()
    // const infoUserLogged = infoUsersLogged.find(user => user.userId === userLogged)
@@ -104,6 +103,12 @@ function CardProducts({
     if(addProduct){
       addProduct()
     }
+  }
+
+  function handleReloadEdit(){
+    setEditFildProduct(false)  
+    activateReload()
+   
   }
  
 
@@ -170,6 +175,7 @@ function CardProducts({
             frete={frete}
             productId={productId}
             group={group}
+            activeReload={handleReloadEdit}
           />
         </div>
       )}
