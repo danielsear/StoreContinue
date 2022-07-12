@@ -180,7 +180,7 @@ function AdminServer(){
     }, 3000);
   }
 
-  function handleShowPixVoucher(event: string){
+  function handleShowPixVoucher(event: string){ 
     setShowImagePixVoucher(event)
   }
   
@@ -192,6 +192,8 @@ function AdminServer(){
     }, 3000);
   }
 
+  console.log(RegisteredSales);
+  
 
   useEffect(()=>{
     ShowProducts()
@@ -343,7 +345,37 @@ function AdminServer(){
          </div>
         )|| !showListCustomeOrder && showRegisteredSalesProduct &&(
           <div>
-            <ListRegisteredSales/>
+            <div className='ListRegisteredSales-box'>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Id da venda</th>
+                    <th>Data do pedido</th>
+                    <th>Data da venda</th>
+                    <th>Nome do comprador</th>
+                    <th>Itens da venda</th>
+                    <th>Tipo da venda</th>
+                    <th>Comprovante da venda</th>
+                  </tr>
+                </thead>
+              </table>
+            </div>
+            {RegisteredSales && RegisteredSales.map(registers => (
+              <ListRegisteredSales
+              orderDate={registers.orderDate}
+              paymentId={registers.paymentId}
+              title={registers.title}
+              typePurchase={registers.typePurchase}
+              userId={registers.userId}
+              cashPayment={registers.cashPayment}
+              deferredPayment={registers.deferredPayment}
+              key={registers.paymentId}
+              namePhoto={registers.namePhoto}
+              nameUser={registers.nameUser}
+              createAt={registers.createAt}
+              showPixVoucher={handleShowPixVoucher}
+              />
+            ))}
           </div>
         )
         } 

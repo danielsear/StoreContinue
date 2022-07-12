@@ -8,7 +8,8 @@ export type RegisteredSalesType ={
   paymentId: string,
   userId: string,
   nameUser?: string,
-  orderDate: string
+  orderDate: string,
+  createAt?: string
 }
     
 

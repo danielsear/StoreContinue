@@ -76,3 +76,18 @@
   width: 500px;
   height: 500px;
 }
+
+.ListRegisteredSales-box{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 1rem 1rem;
+}
+.ListRegisteredSales-box table{ 
+  border: 1px solid #202020;
+}
+.ListRegisteredSales-box table thead tr th{ 
+  border: 1px solid #202020;
+  padding: .7rem;
+  width: 13rem;
+}
