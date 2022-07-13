@@ -60,6 +60,7 @@ function AdminServer(){
 
   
   async function LoadingCustomerOrders(){
+    setShowImagePixVoucher('')
     if(!arrayCustomerOrders){
       const customer : arrayCustumerOders = await FindCustumerOrders()
       setArrayCustomerOrders(customer)
@@ -75,6 +76,7 @@ function AdminServer(){
   }
 
   async function LoadingRegisteredSales() {
+    setShowImagePixVoucher('')
     if(!RegisteredSales){
       const registeredSales : arrayRegisteredSales = await FindRegisteredSales()
       setRegisteredSales(registeredSales)
@@ -181,7 +183,7 @@ function AdminServer(){
   }
 
   function handleShowPixVoucher(event: string){ 
-    setShowImagePixVoucher(event)
+    setShowImagePixVoucher(event)  
   }
   
   function handleActivateReloadCancelOrSellProduct(){
@@ -192,7 +194,6 @@ function AdminServer(){
     }, 3000);
   }
 
-  console.log(RegisteredSales);
   
 
   useEffect(()=>{
@@ -211,7 +212,7 @@ function AdminServer(){
            <div className='admin-register-product' >
                <button onClick={() => {
                 setShowListCustomeOrder(prev => !prev)
-                setShowImagePixVoucher('')
+                setShowImagePixVoucher('')             
                } }
                >Voltar</button>
               {messageCancelOrSellProduct.active && 
@@ -332,9 +333,12 @@ function AdminServer(){
               showPixVoucher={handleShowPixVoucher}
               activateReload={handleActivateReloadCancelOrSellProduct}/>
             ))
-           ) || showImagePixVoucher && (
+           ) || showImagePixVoucher && !showRegisteredSalesProduct &&(
             <div className='showImagePixVoucher'>
-              <h3>Comprovante de pagamento PIX</h3>
+              <div className='showImagePixVoucher-sales'>
+                <h3>Comprovante de pagamento PIX</h3>
+                <button onClick={()=> setShowImagePixVoucher('') }>voltar para pedidos</button>
+              </div>
               <img src={showImagePixVoucher} alt="Comprovante de pagamento." />
             </div>
            ) || (
@@ -343,8 +347,8 @@ function AdminServer(){
             </div>
            )}
          </div>
-        )|| !showListCustomeOrder && showRegisteredSalesProduct &&(
-          <div>
+        )|| !showListCustomeOrder && !showImagePixVoucher && showRegisteredSalesProduct &&(
+          <div className='ListRegisteredSales-container'>
             <div className='ListRegisteredSales-box'>
               <table>
                 <thead>
@@ -360,22 +364,34 @@ function AdminServer(){
                 </thead>
               </table>
             </div>
-            {RegisteredSales && RegisteredSales.map(registers => (
-              <ListRegisteredSales
-              orderDate={registers.orderDate}
-              paymentId={registers.paymentId}
-              title={registers.title}
-              typePurchase={registers.typePurchase}
-              userId={registers.userId}
-              cashPayment={registers.cashPayment}
-              deferredPayment={registers.deferredPayment}
-              key={registers.paymentId}
-              namePhoto={registers.namePhoto}
-              nameUser={registers.nameUser}
-              createAt={registers.createAt}
-              showPixVoucher={handleShowPixVoucher}
-              />
-            ))}
+            {RegisteredSales && RegisteredSales.map(registers => {
+              if(registers.createAt){
+                return (
+                  <ListRegisteredSales
+                  orderDate={registers.orderDate}
+                  paymentId={registers.paymentId}
+                  title={registers.title}
+                  typePurchase={registers.typePurchase}
+                  userId={registers.userId}
+                  cashPayment={registers.cashPayment}
+                  deferredPayment={registers.deferredPayment}
+                  key={registers.paymentId}
+                  namePhoto={registers.namePhoto}
+                  nameUser={registers.nameUser}
+                  createAt={registers.createAt}
+                  showPixVoucher={handleShowPixVoucher}
+                  />
+                )
+              }
+            }) }
+          </div>
+        )|| !showListCustomeOrder && showImagePixVoucher && showRegisteredSalesProduct  && (
+          <div className='showImagePixVoucher'>
+            <div className='showImagePixVoucher-sales'>
+            <h3>Comprovante de pagamento PIX</h3>
+            <button onClick={()=> setShowImagePixVoucher('') }>voltar as vendas</button>
+            </div>
+            <img src={showImagePixVoucher} alt="Comprovante de pagamento." />
           </div>
         )
         } 

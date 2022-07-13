@@ -1,0 +1,20 @@
+.ListRegisteredSales-box-card table{ 
+  margin: .5rem .25rem;
+}
+
+.ListRegisteredSales-box-card table thead{ 
+  border: 1px solid #202020;
+
+}
+.ListRegisteredSales-box-card table thead tr th{ 
+  border: 1px solid #202020;
+  padding: .5rem;
+  width: 13rem;
+}
+
+.th-pix{
+  cursor: pointer;
+}
+.th-pix:hover{
+  color: red;
+}

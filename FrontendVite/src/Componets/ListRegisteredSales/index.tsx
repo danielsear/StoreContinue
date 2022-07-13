@@ -1,7 +1,7 @@
 
 import { useEffect, useState } from 'react'
 import { FindImage,DataImageType } from '../../services/Images'
-import {  RegisteredSalesType } from '../../services/RegisteredSales'
+
 import './styles.css'
 
 type ListRegisteredSalesType ={
@@ -60,7 +60,7 @@ function ListRegisteredSales(data:ListRegisteredSalesType){
 
   return (
   
-      <div className='ListRegisteredSales-box'>
+      <div className='ListRegisteredSales-box-card'>
           <table>
             <thead>
               <tr>
@@ -74,11 +74,11 @@ function ListRegisteredSales(data:ListRegisteredSalesType){
                   </div>
                 ))}</th>
                 <th>{typePurchase}</th>
-                {namePhoto ? <th style={{'cursor': 'pointer'}} onClick={() => {
+                {namePhoto ? <th className='th-pix' onClick={() => {
                   if(image){
                     showPixVoucher(image?.url)
                   }
-                }}>{namePhoto}</th> : <th>{deferredPayment} reais</th>}
+                }}>Comprovante Pix</th> : <th>{deferredPayment} reais</th>}
               </tr>
             </thead>
           </table>

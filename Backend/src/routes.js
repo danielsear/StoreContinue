@@ -270,5 +270,24 @@ routes.post('/registeredSales-create', async (req, res) =>{
 
 })
 
+routes.get('/registeredSales-delete/:id', async (req, res) => {
+  const registeredSales = await RegisteredSales.findOne({paymentId: req.params.id})
+ 
+  await registeredSales.remove()
+  .then(()=>{
+    return res.json({
+      error: false,
+      message: 'Venda deletada com sucesso.'
+    })
+  }).catch(err => {
+    return res.json({
+      error: true,
+      message: err
+    })
+  })
+
+ 
+})
+
 
 module.exports = routes

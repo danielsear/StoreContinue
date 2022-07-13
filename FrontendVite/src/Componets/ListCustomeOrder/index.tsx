@@ -180,20 +180,24 @@ function ListCustomeOrder(data : ListCustomeOrderType){
                           <img src={image?.url} alt={proofOfPaymentPhoto}  />
                     </div>
                   )}
-                  <div className='ListCustomeOrder-show-info-customerOrders-buy-button'>
-                    <div className='ListCustomeOrder-show-info-customerOrders-buy-button-register'>
-                      <button
-                      onClick={handleRegisterProductSale}
-                      >Registrar venda.</button>
-                    </div>
-                    <div className='ListCustomeOrder-show-info-customerOrders-buy-button-cancel'>
-                      <button
-                      onClick={()=> {
-                        handleCancelProductSale('cancel')
-                      }}
-                      >Cancelar venda.</button>
-                    </div>
-                  </div>
+                  {!message.active && (
+                    <div className='ListCustomeOrder-show-info-customerOrders-buy-button'>
+                     <div className='ListCustomeOrder-show-info-customerOrders-buy-button-register'>
+                       <button
+                       onClick={handleRegisterProductSale}
+                       >Registrar venda.</button>
+                     </div>
+                     <div className='ListCustomeOrder-show-info-customerOrders-buy-button-cancel'>
+                       <button
+                       onClick={()=> {
+                         handleCancelProductSale('cancel')
+                       }}
+                       >Cancelar venda.</button>
+                     </div>
+                   </div>
+                  )
+                   
+                  }
                 </div>
            </div>
         </div>

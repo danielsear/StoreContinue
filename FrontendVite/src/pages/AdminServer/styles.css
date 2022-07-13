@@ -77,17 +77,43 @@
   height: 500px;
 }
 
+.ListRegisteredSales-container{
+  margin: 3rem .5rem;
+}
 .ListRegisteredSales-box{
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 1rem 1rem;
+  margin: .5rem .25rem;
 }
 .ListRegisteredSales-box table{ 
   border: 1px solid #202020;
 }
 .ListRegisteredSales-box table thead tr th{ 
-  border: 1px solid #202020;
-  padding: .7rem;
+  background-color: #202020;
+  color: #fff;
+
+  padding: .5rem;
   width: 13rem;
+}
+
+.showImagePixVoucher-sales{
+  display: flex;
+
+}
+.showImagePixVoucher-sales button{
+  margin-left: 5.1rem;
+  border-radius: 25%;
+
+  height: 2rem;
+  
+  background: #fff;
+  color: #202020;
+
+  font-size: 1rem;
+}
+.showImagePixVoucher-sales button:hover{
+  color: #fff;
+  background-color: #202020;
+  border: none;
 }
