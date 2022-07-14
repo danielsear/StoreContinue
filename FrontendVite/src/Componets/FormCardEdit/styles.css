@@ -2,6 +2,7 @@
 .form-card-container{
   display: flex;
   flex-direction: column;
+  margin: 1rem 6rem 1rem 1rem;
 }
 .form-card-image{
   width: 15rem;
@@ -40,7 +41,7 @@
   position: absolute;
 }
 .form-card-description div input{
-  width: 100%;
+ 
   margin: 0 .5rem;
   border-top: none;
   border-right: none;
@@ -92,19 +93,24 @@
   padding: 0;
 }
 
-.form-card-button{
+.form-card-button-edit-container{
   margin: 1rem 1rem;
 
-  width: 100%;
-
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
 }
-.form-card-button button{
-  width: 10rem;
+.form-card-button-edit button{
+  
   border-top: none;
   border-left: none;
   background: #04d483;
+  border-radius: .5rem;
+}
+.form-card-button-cancel button{
+
+  border-top: none;
+  border-left: none;
+  background: red;
   border-radius: .5rem;
 }
 .form-card-button button:hover{
@@ -118,3 +124,4 @@
 
   position: absolute;
 }
+

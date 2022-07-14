@@ -6,7 +6,7 @@ import {  ProductsType, UpdateProduct} from '../../services/Products'
 
 
 import { ChangeEvent, FormEvent, useState } from 'react'
-import { useNavigate } from 'react-router'
+
 
 type arrayProducts = ProductsType[]
 
@@ -21,7 +21,8 @@ type FormCardEditType = {
   admin?: boolean | undefined;
   userLogged?: string | undefined;
   group: string;
-  activeReload : () => void
+  activeReload : () => void;
+  activateEditFildProduct?: () => void;
 }
 
 function FormCardEdit({
@@ -33,10 +34,10 @@ function FormCardEdit({
   frete, 
   productId,
   group,
-  activeReload
+  activeReload,
+  activateEditFildProduct
 }: FormCardEditType){
   const [message, setMessage] = useState('')
-  const navigate = useNavigate()
   const [img, setImg] = useState<File>()
   const [product, setProduct] = useState({
     title: '',
@@ -137,8 +138,19 @@ function FormCardEdit({
         <label >Preço a prazo:</label>
          <input type="text" name='forwardPrice'onChange={handleProduct} placeholder={forwardPrice}/>
         </div>
-        <div className='form-card-button'>
-         <button type='submit'>Editar Produto</button>
+        <div className='form-card-button-edit-container'>
+         <div className='form-card-button-edit '>
+          <button type='submit'>Editar Produto</button>
+         </div>
+         <div className='form-card-button-cancel'>
+          <button onClick={()=> {
+            if(activateEditFildProduct){
+              activateEditFildProduct()
+            }
+          }} >
+            Cancelar
+          </button>
+         </div>
         </div>
      </div>
     </form>

@@ -56,6 +56,10 @@ function AdminServer(){
     active: false
    })
 
+   const [activeEditProduct, setActiveEditProduct] = useState(false)
+
+
+
 
 
   
@@ -238,7 +242,7 @@ function AdminServer(){
                   }>Mostrar lista de pedidos</button>
                </div> 
             )}
-            {!showFormCardProduct && !showListCustomeOrder &&(             
+            {!showFormCardProduct && !showListCustomeOrder  &&(             
               <div className='admin-register-product' >
                 <button onClick={
                   LoadingRegisteredSales
@@ -249,6 +253,7 @@ function AdminServer(){
                 )}</button>
               </div>
             )}
+     
           </>
         )}
         </div>
@@ -331,7 +336,8 @@ function AdminServer(){
               createAt={customer.createAt}
               key={customer.paymentId}
               showPixVoucher={handleShowPixVoucher}
-              activateReload={handleActivateReloadCancelOrSellProduct}/>
+              activateReload={handleActivateReloadCancelOrSellProduct}
+              />
             ))
            ) || showImagePixVoucher && !showRegisteredSalesProduct &&(
             <div className='showImagePixVoucher'>

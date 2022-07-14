@@ -44,7 +44,7 @@ function CardProducts({
   userLogged,
   group,
   addProduct,
-  activateReload
+  activateReload,
 } : UserProduct){
   const [img, setImg] = useState<DataImageType>()
   const [editFildProduct, setEditFildProduct] = useState(false)
@@ -114,6 +114,7 @@ function CardProducts({
 
   useEffect(()=>{
     ShowImage()
+   
   },[])
 
   return (
@@ -143,7 +144,7 @@ function CardProducts({
               <>
                 <div className='editProduct'>
                  <img src={editProduct} alt="edit" 
-                 onClick={() => setEditFildProduct(prev => !prev)}
+                 onClick={() =>  setEditFildProduct(prev => !prev)}
                  />
                 </div>
                 <div className='deleteProduct' onClick={handleDeleteProduct}>
@@ -165,18 +166,18 @@ function CardProducts({
           )}
         </div>
       ) : (
-        <div className=''>
-          <FormCardEdit 
-            forwardPrice={forwardPrice}
-            namePhoto={namePhoto}
-            spotPrice={spotPrice}
-            title={title}
-            pricePrevious={pricePrevious}
-            frete={frete}
-            productId={productId}
-            group={group}
-            activeReload={handleReloadEdit}
-          />
+        <div>
+           <FormCardEdit 
+             forwardPrice={forwardPrice}
+             namePhoto={namePhoto}
+             spotPrice={spotPrice}
+             title={title}
+             pricePrevious={pricePrevious}
+             frete={frete}
+             productId={productId}
+             group={group}
+             activeReload={handleReloadEdit}
+           />
         </div>
       )}
    
