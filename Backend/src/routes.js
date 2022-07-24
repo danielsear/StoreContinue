@@ -47,7 +47,12 @@ routes.get('/delete-image/:name', async (req, res) => {
 
 routes.post('/user-create', async (req, res) => {
   const { name, key, email, password, admin, userId, file,likeProducts} = req.body
-  const user = await User.create({ name, key, email, password, admin, userId,file,likeProducts })
+ 
+  if(admin){
+    const user = await User.create({ name, key, email, password, admin, userId,file,likeProducts })
+    return res.json(user)
+  }
+  const user = await User.create({ name, key, email, password, admin: false, userId,file,likeProducts })
   return res.json(user)
 })
 

@@ -32,7 +32,6 @@ function Header({ user ,imageUser , search, reaload, codigo}: HeaderProps) {
   }
 
 
-
   function LogOut() {
     if(reaload){
       reaload()

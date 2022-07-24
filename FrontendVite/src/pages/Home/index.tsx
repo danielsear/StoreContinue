@@ -489,7 +489,7 @@ function Home() {
               físico demonstrado na hora da retirada no caixa.
             </p>        
             <p><strong>1-</strong> Você poderá escolher pagar via Pix com o código da loja NUMERO-PIX-DA-LOJA.</p>
-             {!pixPayment ? (
+             {!pixPayment  ? (
                <div className='card-shopping-cart-close-value-button finalizingThePurchase'
                onClick={() => setPixPayment(prev => !prev)}
              >
@@ -590,7 +590,7 @@ function Home() {
                        Fazer pedido
                      </div> 
                    )} 
-                   {finalizingThePurchase && (
+                   {finalizingThePurchase  && (
                      <div className='card-shopping-cart-total-value-button' 
                      onClick={handleRefreshingPage}  >
                        Cancelar pedido
