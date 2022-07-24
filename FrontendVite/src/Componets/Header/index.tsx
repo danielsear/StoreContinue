@@ -3,63 +3,41 @@ import './styles.css'
 import Search from '../../assets/images/search_icon.svg'
 import userMenu from '../../assets/images/user-enter1.svg'
 
-import { ChangeEvent, FormEvent, useEffect, useState } from 'react'
-import {  FindUsers, User } from '../../services/User'
-import { FindImage, DataImageType } from '../../services/Images'
+import { ChangeEvent, useState } from 'react'
+import {   User } from '../../services/User'
+
 
 import { useNavigate } from 'react-router-dom'
 
 type HeaderProps = {
-  userId?: string,
   search: (event: string) => void 
+  user?: User | null,
+  imageUser?: string,
+  reaload?: () => void, 
+  codigo?: string
 }
 
-type arrayUsers = User[]
 
-
-type arrayDataImageType = DataImageType[]
-
-function Header({ userId , search}: HeaderProps) {
-  const [user, setUser] = useState<User | null>()
-  const [imageUser, setImageUser] = useState('')
+function Header({ user ,imageUser , search, reaload, codigo}: HeaderProps) {
+  
   const [inputSearchValue, setInputSearchValue] = useState('')
 
 
   const navegate = useNavigate()
 
-  async function getUser() {
-   if(userId){
-    const dataUser: arrayUsers = await FindUsers()
-    // const userLogged = dataUser.map(data => console.log(data))
-
-    if (dataUser && userId) {
-      const userLogged = dataUser.find(data => data.userId === userId)
-      setUser(userLogged)
-      
-      if(userLogged?.file){
-        const dataImage: arrayDataImageType  = await FindImage()
-
-        const imageUserLogged = dataImage.find(data => data.name === userLogged.file)
-        
-        if(imageUserLogged){
-          setImageUser(imageUserLogged.url)
-        }
-      }
-    }
-   }
-  }
+  
 
   function handleSearchInputValue(event : ChangeEvent<HTMLInputElement>){
     setInputSearchValue(event.target.value)  
   }
 
-  useEffect(() => {
-    getUser()
-  }, [])
+
 
   function LogOut() {
-    setUser(null)
-    navegate('/')
+    if(reaload){
+      reaload()
+      navegate('/')
+    }
   }
 
   return (
@@ -83,7 +61,7 @@ function Header({ userId , search}: HeaderProps) {
         </section>
       <section className="user_menu">
         <div className="show_user_info">
-          {user ? (
+          {user && user.admin === false && (
             <div className="user_info">
               <div className='user_info_info'>
               <strong>{user.name}</strong>
@@ -96,13 +74,17 @@ function Header({ userId , search}: HeaderProps) {
                 <img src={imageUser} alt={imageUser} />
               </div>     
             </div>
-          ) : (
+          ) || !codigo && (
             <a href="/form/login">
               <i>
                 <img src={userMenu} alt="Menu do usuário" />
               </i>
               Entrar
             </a>
+          ) || codigo === 'true' && (
+            <div className='menu-admin'>
+              <p>Menu-admin</p>
+            </div>
           )}
         </div>
       </section>

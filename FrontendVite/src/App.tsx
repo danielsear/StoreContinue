@@ -12,7 +12,7 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/admin" element={<AdminServer />} />
+        <Route path="/admin-Kassinha/:codigo" element={<AdminServer />} />
         <Route path="/" element={<Home />} />
         <Route path="/:userId" element={<Home />} />
         <Route path="/form/login" element={<FormLogin />} />

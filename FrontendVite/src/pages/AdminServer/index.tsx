@@ -14,6 +14,7 @@ import { useEffect, useState } from 'react'
 import {FindProducts, ProductsType} from '../../services/Products'
 import { FindCustumerOrders, CustumerOdersType } from '../../services/CustomerOrders'
 import { FindRegisteredSales, RegisteredSalesType} from '../../services/RegisteredSales'
+import { useNavigate, useParams } from 'react-router'
 
 
 type arrayProducts = ProductsType[]
@@ -24,9 +25,13 @@ type arrayRegisteredSales = RegisteredSalesType[]
 
 
 function AdminServer(){
+  const {codigo} = useParams()
+  const navigate = useNavigate()
+
   const [products, setProducts] = useState<arrayProducts>()
   const [arrayCustomerOrders, setArrayCustomerOrders] = useState<arrayCustumerOders>()
   const [RegisteredSales, setRegisteredSales] = useState<arrayRegisteredSales>()
+
 
 
   const [reload, setReload] = useState(false)
@@ -207,17 +212,21 @@ function AdminServer(){
     }, 3000);
   }
 
+
   
 
   useEffect(()=>{
+   if(codigo === 'true'){
     ShowProducts()
-    
+   }
   },[reload])
 
   
   return (
     <>
-      <Headers  search={(event: string)=> handleInputSearchValue(event)}
+      <Headers  
+      search={(event: string)=> handleInputSearchValue(event)}
+      codigo={codigo}
 />
      
       {reload && <h1>{reload}</h1>}

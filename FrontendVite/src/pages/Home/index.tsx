@@ -10,11 +10,14 @@ import Header from '../../Componets/Header'
 import CardProducts from '../../Componets/CardProducts'
 
 import { FindProducts, ProductsType } from '../../services/Products'
-import {  RegisterImage } from '../../services/Images'
+import {  RegisterImage, FindImage, DataImageType } from '../../services/Images'
+import {  FindUsers, User } from '../../services/User'
+
 
 import { CreateCustomerOrders,DataPaymentType} from '../../services/CustomerOrders'
 
-
+type arrayUsers = User[]
+type arrayDataImageType = DataImageType[]
 
 
 type arrayProducts = ProductsType[]
@@ -32,6 +35,9 @@ type arrayProductsShoppingCartType = ProductsShoppingCartType[]
 function Home() {
   const { userId } = useParams()
   const [products, setProducts] = useState<arrayProducts >()
+
+  const [user, setUser] = useState<User | null>()
+  const [imageUser, setImageUser] = useState('')
 
  
   const [productsAddedToShoppingCart, setProductsAddedToShoppingCart] =
@@ -78,6 +84,28 @@ function Home() {
     
       const arrayProducts = products as arrayProducts
         setProducts(arrayProducts)
+  }
+
+  async function getUser() {
+    if(userId){
+     const dataUser: arrayUsers = await FindUsers()
+     // const userLogged = dataUser.map(data => console.log(data))
+ 
+     if (dataUser && userId) {
+       const userLogged = dataUser.find(data => data.userId === userId)
+       setUser(userLogged)
+       
+       if(userLogged?.file){
+         const dataImage: arrayDataImageType  = await FindImage()
+ 
+         const imageUserLogged = dataImage.find(data => data.name === userLogged.file)
+         
+         if(imageUserLogged){
+           setImageUser(imageUserLogged.url)
+         }
+       }
+     }
+    }
   }
 
   function handleCartValue(){
@@ -256,13 +284,20 @@ function Home() {
 
   useEffect(()=>{
     ShowProducts()
+    if(userId){
+      getUser()
+    }
   },[refreshingPage])
 
   return (
     <>
      {!serverOff && (
        <Header 
-       userId={userId}  
+       reaload={()=> {
+        setUser(null)
+       }}
+       user={user}
+       imageUser={imageUser}
        search={(event: string)=> handleInputSearchValue(event)}
        />
      )}

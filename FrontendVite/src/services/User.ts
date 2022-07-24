@@ -14,7 +14,7 @@ export type User = {
 async function CreateUser(user: User) {
   const { userId, name, email, password, admin, file, likeProducts} = user
 
- return await fetch('http://localhost:3333/user', {
+ return await fetch('http://localhost:3333/user-create', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'

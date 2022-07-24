@@ -23,12 +23,19 @@ function FormLogin() {
 
     if (user) {
       const dataUser: arrayUsers = await FindUsers()
+      
       const userLogged = dataUser.find(
         data =>
           data.email === user.email &&
           data.password === user.password &&
           data.name === user.name
-      )
+      )    
+
+      if(userLogged?.admin === true){
+        navegate(`/admin-kassinha/${userLogged?.admin}`)
+        return
+      }
+      
 
       if (!userLogged) {
         setMessage('Usuário Inválido.')
