@@ -24,7 +24,10 @@ async function FindProducts() {
   .then(data =>{
    return data
   })
-  .catch(err => console.error(err))
+  .catch(err => {
+    console.error(err)
+    return {message: 'Servidor Ofiline!'}
+  })
 }
 
 async function CreateProduct(data: ProductsType) {

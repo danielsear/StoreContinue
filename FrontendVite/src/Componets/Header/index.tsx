@@ -28,6 +28,7 @@ function Header({ userId , search}: HeaderProps) {
   const navegate = useNavigate()
 
   async function getUser() {
+   if(userId){
     const dataUser: arrayUsers = await FindUsers()
     // const userLogged = dataUser.map(data => console.log(data))
 
@@ -45,6 +46,7 @@ function Header({ userId , search}: HeaderProps) {
         }
       }
     }
+   }
   }
 
   function handleSearchInputValue(event : ChangeEvent<HTMLInputElement>){

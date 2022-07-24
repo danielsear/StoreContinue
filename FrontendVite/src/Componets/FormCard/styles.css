@@ -24,7 +24,9 @@
   margin: 1rem 0;
 }
 
-
+.form-card-description{
+  width: 40%;
+}
 .form-card-description-name{
   font-size: 1.125rem;
   line-height: 20px;
@@ -93,14 +95,15 @@
 }
 
 .form-card-button{
-  margin: 1rem 1rem;
 
   width: 100%;
 
   display: flex;
-  justify-content: center;
+  
 }
 .form-card-button button{
+  margin-left: 4rem;
+  margin-top: 1rem;
   width: 10rem;
   border-top: none;
   border-left: none;

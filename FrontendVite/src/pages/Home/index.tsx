@@ -16,6 +16,7 @@ import { CreateCustomerOrders,DataPaymentType} from '../../services/CustomerOrde
 
 
 
+
 type arrayProducts = ProductsType[]
 
 type ProductsShoppingCartType = {
@@ -61,12 +62,22 @@ function Home() {
    const [activeSearchProduct, setActiveSearchProduct] = useState(false)
    const [showActiveSearchProduct, setShowActiveSearchProduct] = useState(false)
 
+   const [serverOff, setServerOff] = useState('')
+   
    
 
 
   async function ShowProducts() {
-    const products : arrayProducts = await FindProducts()
-    setProducts(products)
+    const products : arrayProducts | {message: string}= await FindProducts()
+    
+     const message = products as {message: string}
+        if(message.message){
+          setServerOff(message.message)
+          return
+        }
+    
+      const arrayProducts = products as arrayProducts
+        setProducts(arrayProducts)
   }
 
   function handleCartValue(){
@@ -243,22 +254,25 @@ function Home() {
   }
 
 
-
   useEffect(()=>{
     ShowProducts()
   },[refreshingPage])
 
   return (
     <>
-      <Header 
-      userId={userId}  
-      search={(event: string)=> handleInputSearchValue(event)}
-      />
+     {!serverOff && (
+       <Header 
+       userId={userId}  
+       search={(event: string)=> handleInputSearchValue(event)}
+       />
+     )}
       <div className='home-container'>
         {!finalizingThePurchase ? (
                <div className='home-show-product-container'>
+
                {products ? (
                       <>
+                       
                         {activeSearchProduct && (
                           <div className='home-show-product-group-container'>
                             <h2>Pesquisa:</h2>
@@ -268,7 +282,7 @@ function Home() {
                               if(inputSearchValue.title !== ''){
                                 return (
                                   <CardProducts 
-                                  ativeReload={()=> ''}
+                                  activateReload={()=> ''}
                                   group={inputSearchValue.group}
                                   forwardPrice={inputSearchValue.forwardPrice}
                                   frete={inputSearchValue.frete}
@@ -312,7 +326,7 @@ function Home() {
                               if(product.group === 'Brinquedo'){
                                 return(
                                   <CardProducts 
-                             ativeReload={()=> ''}
+                             activateReload={()=> ''}
                              group={product.group}
                              forwardPrice={product.forwardPrice}
                              frete={product.frete}
@@ -348,7 +362,7 @@ function Home() {
                               if(product.group === 'Produtos de casa'){
                                 return(
                                   <CardProducts 
-                             ativeReload={()=> ''}
+                             activateReload={()=> ''}
                              group={product.group}
                              forwardPrice={product.forwardPrice}
                              frete={product.frete}
@@ -384,7 +398,7 @@ function Home() {
                               if(product.group === 'Papelaria'){
                                 return(
                                   <CardProducts 
-                             ativeReload={()=> ''}
+                             activateReload={()=> ''}
                              group={product.group}
                              forwardPrice={product.forwardPrice}
                              frete={product.frete}
@@ -415,7 +429,17 @@ function Home() {
                       </>     
                ) : (
                  <div className="menu_none">
-                   <h1>Não há produtos cadastrados.</h1>
+                        {serverOff? (
+                           <>
+                            <div id="header_container">
+                              <section className="logo">Kassinha Variedades</section>
+                              <h2>...{serverOff}</h2>
+                            </div>
+                             
+                          </>
+                        ):(
+                          <h1>Não há produtos cadastrados.</h1>
+                        )}
                  </div>
                )}
                </div>
@@ -543,7 +567,9 @@ function Home() {
         </div>
       )}
       </div>
-      <Footer />
+      {!serverOff && (
+        <Footer />
+      )}
     </>
   )
 }

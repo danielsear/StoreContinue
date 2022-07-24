@@ -58,7 +58,7 @@ function AdminServer(){
 
    const [activeEditProduct, setActiveEditProduct] = useState(false)
 
-
+   const [serverOff, setServerOff] = useState('')
 
 
 
@@ -72,10 +72,19 @@ function AdminServer(){
     setShowListCustomeOrder(prev => !prev)
   }
   
+ 
   async function ShowProducts() {
     if(!products){
-      const products : arrayProducts = await FindProducts()
-      setProducts(products)
+      const products : arrayProducts | {message: string}= await FindProducts()
+    
+      const message = products as {message: string}
+         if(message.message){
+           setServerOff(message.message)
+           return
+         }
+     
+       const arrayProducts = products as arrayProducts
+         setProducts(arrayProducts)
     }
   }
 
@@ -90,14 +99,14 @@ function AdminServer(){
 
   const ativeReload= () => {
     setTimeout(() => {
-      setReload(prev => !prev)
+  
       setShowFormCardProduct(prev => !prev)
       setMessageCancelOrSellProduct({
         error: false,
         message: '',
         active: false
        })
-      
+       setReload(prev => !prev)
     }, 3000);
   }
 
@@ -210,53 +219,61 @@ function AdminServer(){
     <>
       <Headers  search={(event: string)=> handleInputSearchValue(event)}
 />
-      {reload && <h1>{reload}</h1>}
-      <div className='admin-register-product-container'>
-        {showListCustomeOrder ? (
-           <div className='admin-register-product' >
-               <button onClick={() => {
-                setShowListCustomeOrder(prev => !prev)
-                setShowImagePixVoucher('')             
-               } }
-               >Voltar</button>
-              {messageCancelOrSellProduct.active && 
-              <div>{messageCancelOrSellProduct.message}</div>
-              }
-           </div>
-        ): (
-          <>
-            {!showRegisteredSalesProduct && (
-              <div className='admin-register-product' >
-                <button onClick={() => setShowFormCardProduct(prev => !prev)}
-                >{!showFormCardProduct ? (
-                  "Cadastrar produto"
-                ): (
-                  'Cancelar'
-                )}</button>
-              </div>
-            )}
-            {!showFormCardProduct &&  !showRegisteredSalesProduct &&(             
-               <div className='admin-register-product' >
-                  <button onClick={
-                    LoadingCustomerOrders
-                  }>Mostrar lista de pedidos</button>
-               </div> 
-            )}
-            {!showFormCardProduct && !showListCustomeOrder  &&(             
-              <div className='admin-register-product' >
-                <button onClick={
-                  LoadingRegisteredSales
-                }>{!showRegisteredSalesProduct ? (
-                  "Mostrar vendas"
-                ): (
-                  'Voltar'
-                )}</button>
-              </div>
-            )}
      
-          </>
+      {reload && <h1>{reload}</h1>}
+        {!serverOff && (
+           <div className='admin-register-product-container'>
+           {showListCustomeOrder ? (
+              <div className='admin-register-product' >
+                  <button onClick={() => {
+                   setShowListCustomeOrder(prev => !prev)
+                   setShowImagePixVoucher('')             
+                  } }
+                  >Voltar</button>
+                 {messageCancelOrSellProduct.active && 
+                 <div>{messageCancelOrSellProduct.message}</div>
+                 }
+              </div>
+           ): (
+             <>
+               {!showRegisteredSalesProduct && (
+                 <div className='admin-register-product' >
+                   <button onClick={() => setShowFormCardProduct(prev => !prev)}
+                   >{!showFormCardProduct ? (
+                     "Cadastrar produto"
+                   ): (
+                     'Cancelar'
+                   )}</button>
+                 </div>
+               )}
+               {!showFormCardProduct &&  !showRegisteredSalesProduct &&(             
+                  <div className='admin-register-product' >
+                     <button onClick={
+                       LoadingCustomerOrders
+                     }>Mostrar lista de pedidos</button>
+                  </div> 
+               )}
+               {!showFormCardProduct && !showListCustomeOrder  &&(             
+                 <div className='admin-register-product' >
+                   <button onClick={
+                     LoadingRegisteredSales
+                   }>{!showRegisteredSalesProduct ? (
+                     "Mostrar vendas"
+                   ): (
+                     'Voltar'
+                   )}</button>
+                 </div>
+               )}
+        
+             </>
+           )}
+           </div>
         )}
-        </div>
+        {showFormCardProduct && (
+            <div className='admin-showFormCardProduct'>
+            <FormCard ativeReload={ativeReload}/>
+          </div>
+          )}
         {!showListCustomeOrder && !showRegisteredSalesProduct && (
           <>
             {activeSearchProduct && (
@@ -310,14 +327,14 @@ function AdminServer(){
                   />)
           ) : (
             <div className="menu_none">
-              <h1>Não há produtos cadastrados.</h1>  
+              {serverOff ? (
+                <h2>{serverOff}</h2>
+              ): (
+                <h1>Não há produtos cadastrados.</h1>  
+              )}
             </div>
           )}
-          {showFormCardProduct && (
-            <div className='admin-showFormCardProduct'>
-            <FormCard ativeReload={ativeReload}/>
-          </div>
-          )}
+         
           </div>
           </>
         )|| showListCustomeOrder && !showRegisteredSalesProduct &&(

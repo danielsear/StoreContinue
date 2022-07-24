@@ -57,7 +57,8 @@ function FormCardEdit({
 
   async  function handleSubmit(event: FormEvent){
     event.preventDefault()
-
+    console.log('oi');
+    
     /*
       Deletar a imagem ja existente, so que agora esta dando error
     */
@@ -90,7 +91,7 @@ function FormCardEdit({
   return (
       <>
         {message && <span className='form-card-message'>{message}</span>}
-        <form className='form-card-container' onSubmit={handleSubmit}>
+        <form className='form-card-container' >
       <div className='form-card-image'>
       <div className="form-show-image">
           {img ? (
@@ -140,7 +141,7 @@ function FormCardEdit({
         </div>
         <div className='form-card-button-edit-container'>
          <div className='form-card-button-edit '>
-          <button type='submit'>Editar Produto</button>
+          <button onClick={handleSubmit}>Editar Produto</button>
          </div>
          <div className='form-card-button-cancel'>
           <button onClick={()=> {
