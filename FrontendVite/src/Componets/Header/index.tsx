@@ -3,14 +3,14 @@ import './styles.css'
 import Search from '../../assets/images/search_icon.svg'
 import userMenu from '../../assets/images/user-enter1.svg'
 
-import { ChangeEvent, useState } from 'react'
+import { ChangeEvent } from 'react'
 import {   User } from '../../services/User'
 
 
 import { useNavigate } from 'react-router-dom'
 
 type HeaderProps = {
-  search: (event: string) => void 
+  search: (event: ChangeEvent<HTMLInputElement>) => void 
   user?: User | null,
   imageUser?: string,
   reaload?: () => void, 
@@ -20,17 +20,7 @@ type HeaderProps = {
 
 function Header({ user ,imageUser , search, reaload, codigo}: HeaderProps) {
   
-  const [inputSearchValue, setInputSearchValue] = useState('')
-
-
   const navegate = useNavigate()
-
-  
-
-  function handleSearchInputValue(event : ChangeEvent<HTMLInputElement>){
-    setInputSearchValue(event.target.value)  
-  }
-
 
   function LogOut() {
     if(reaload){
@@ -48,12 +38,9 @@ function Header({ user ,imageUser , search, reaload, codigo}: HeaderProps) {
             type="text"  
             name='search' 
             placeholder="  o que você esta procurando?"
-            onChange={handleSearchInputValue} 
+            onChange={search} 
             />
-            <button onClick={()=> { 
-              if(inputSearchValue){ 
-                search(inputSearchValue)
-              }}}>
+            <button >
               <img src={Search} alt="pesquisa" />
             </button>
           </div>

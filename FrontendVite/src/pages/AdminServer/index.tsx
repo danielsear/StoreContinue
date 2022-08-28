@@ -9,12 +9,12 @@ import ListRegisteredSales from '../../Componets/ListRegisteredSales'
 
 
 
-import { useEffect, useState } from 'react'
+import { ChangeEvent, useEffect, useState } from 'react'
 
 import {FindProducts, ProductsType} from '../../services/Products'
 import { FindCustumerOrders, CustumerOdersType } from '../../services/CustomerOrders'
 import { FindRegisteredSales, RegisteredSalesType} from '../../services/RegisteredSales'
-import { useNavigate, useParams } from 'react-router'
+import {  useParams } from 'react-router'
 
 
 type arrayProducts = ProductsType[]
@@ -26,12 +26,13 @@ type arrayRegisteredSales = RegisteredSalesType[]
 
 function AdminServer(){
   const {codigo} = useParams()
-  const navigate = useNavigate()
 
-  const [products, setProducts] = useState<arrayProducts>()
+  const [products, setProducts] = useState<arrayProducts>([])
   const [arrayCustomerOrders, setArrayCustomerOrders] = useState<arrayCustumerOders>()
   const [RegisteredSales, setRegisteredSales] = useState<arrayRegisteredSales>()
 
+
+  
 
 
   const [reload, setReload] = useState(false)
@@ -41,19 +42,6 @@ function AdminServer(){
   const [showRegisteredSalesProduct, setShowRegisteredSalesProduct] = useState(false)
 
 
- 
-  const [inputSearchValue, setInputSearchValue] = useState<arrayProducts>([{
-    forwardPrice:' ',
-    group:'',
-    pricePrevious: '',
-    spotPrice: '',
-    title: ''
-   }])
-   const [SearchValue, setSearchValue] = useState(['init'])
-
-   const [activeSearchProduct, setActiveSearchProduct] = useState(false)
-   const [showActiveSearchProduct, setShowActiveSearchProduct] = useState(false)
-
    const [showImagePixVoucher, setShowImagePixVoucher] = useState('')
    const [messageCancelOrSellProduct, setMessageCancelOrSellProduct] = useState({
     error: false,
@@ -61,10 +49,7 @@ function AdminServer(){
     active: false
    })
 
-   const [activeEditProduct, setActiveEditProduct] = useState(false)
-
    const [serverOff, setServerOff] = useState('')
-
 
 
   
@@ -79,7 +64,7 @@ function AdminServer(){
   
  
   async function ShowProducts() {
-    if(!products){
+
       const products : arrayProducts | {message: string}= await FindProducts()
     
       const message = products as {message: string}
@@ -90,7 +75,7 @@ function AdminServer(){
      
        const arrayProducts = products as arrayProducts
          setProducts(arrayProducts)
-    }
+    
   }
 
   async function LoadingRegisteredSales() {
@@ -121,84 +106,13 @@ function AdminServer(){
     }, 3000);
   }
 
-  function handleInputSearchValue(event : string){
-    const eventsplit = event.split(' ')
-
-    
-    setShowActiveSearchProduct(false)
-    if(products){
-
-      setActiveSearchProduct(true)
-
-       products.map(product => {
-        const titlesplit = product.title.split(' ')
-         
-
-          eventsplit.map(eventText =>{
-            titlesplit.map(titleText => {
-              
-             const titlesplitlowercase = titleText.toLowerCase()
-             const eventsplitlowercase = eventText.toLowerCase()
-
-             const countString= eventsplitlowercase.length
-
-             if(countString > 3){
-
-              if(eventsplitlowercase === titlesplitlowercase){ 
-                
-              setShowActiveSearchProduct(true)
-                
-                if(inputSearchValue){
-
-                  const confirme = SearchValue.map(text => {    
-                    const arrayText = text.split(' ')
-                   
-                    const consult=  arrayText.map(text =>{
-                        if(text === titlesplitlowercase){
-                          return true
-                        }
-                      })
-                    const confirmConsult = consult.find(text => text === true)
-                    if(confirmConsult){
-                      return confirmConsult
-                    }else{
-                      false
-                    }
-                 }) 
-                 
-                 const confirmePosition = confirme.find(text => text === true)
-                 if(confirmePosition){             
-                  return
-                 }
-
-                 confirme.map(reset => false)
-
-                 setSearchValue([...SearchValue, product.title.toLowerCase()]) 
-
-                  setInputSearchValue([...inputSearchValue,{
-                    forwardPrice: product.forwardPrice,
-                    group: product.group,
-                    pricePrevious: product.pricePrevious,
-                    productId: product.productId,
-                    spotPrice: product.spotPrice,
-                    title: product.title,
-                    namePhoto: product.namePhoto,
-                    userLogged: product.userLogged
-                  }])                             
-              }     
-            }
-             }           
-          } )
-        })
-      })
-    }
-  }
-
-  function handleTimeCloseSearch(){
-    setTimeout(() => {
-    setActiveSearchProduct(false)
-    }, 3000);
-  }
+ /* Search */
+ const [query, setQuery] = useState('') 
+ const queryy= products
+ const search =  queryy.filter(value => value.title.toLowerCase().includes(query)) 
+ function handleSearch(event : ChangeEvent<HTMLInputElement>){
+   setQuery(event.target.value)
+ }
 
   function handleShowPixVoucher(event: string){ 
     setShowImagePixVoucher(event)  
@@ -213,19 +127,22 @@ function AdminServer(){
   }
 
 
+  console.log(products);
   
 
   useEffect(()=>{
-   if(codigo === 'true'){
-    ShowProducts()
-   }
+   
+    if(codigo === 'true'){
+      ShowProducts()
+    }
+   
   },[reload])
 
   
   return (
     <>
       <Headers  
-      search={(event: string)=> handleInputSearchValue(event)}
+       search={(event: ChangeEvent<HTMLInputElement>)=> handleSearch(event)}
       codigo={codigo}
 />
      
@@ -285,13 +202,12 @@ function AdminServer(){
           )}
         {!showListCustomeOrder && !showRegisteredSalesProduct && (
           <>
-            {activeSearchProduct && (
+            {query && (
                           <div className='home-show-product-group-container'>
                             <h2>Pesquisa:</h2>
                           <div className='home-show-product-group'>   
-                           {showActiveSearchProduct ? (
-                            inputSearchValue.map(inputSearchValue =>{
-                              if(inputSearchValue.title !== ''){
+                           {search && (
+                            search.map(inputSearchValue =>{
                                 return (
                                   <CardProducts 
                                   activateReload={()=> ''}
@@ -306,15 +222,8 @@ function AdminServer(){
                                   productId={inputSearchValue.productId}
                                   />
                                 )
-                              }
                             })
-                           ): (
-                            <>
-                              {handleTimeCloseSearch()}
-                              <h2>Item não encontrado</h2>
-                            </>    
                            )}
-                      
                           </div>
                         </div>
                         )}

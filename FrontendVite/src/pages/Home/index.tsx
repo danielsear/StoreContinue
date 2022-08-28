@@ -1,5 +1,7 @@
 import './styles.css'
 
+import React, { ChangeEvent } from 'react'
+
 import { useState , useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 
@@ -15,6 +17,7 @@ import {  FindUsers, User } from '../../services/User'
 
 
 import { CreateCustomerOrders,DataPaymentType} from '../../services/CustomerOrders'
+import { AuthContext } from '../../provider/auth'
 
 type arrayUsers = User[]
 type arrayDataImageType = DataImageType[]
@@ -34,12 +37,17 @@ type arrayProductsShoppingCartType = ProductsShoppingCartType[]
 
 function Home() {
   const { userId } = useParams()
-  const [products, setProducts] = useState<arrayProducts >()
+  const [products, setProducts] = useState<arrayProducts >([])
 
+ const produtos = React.useContext(AuthContext)
+  
+
+ 
+  
   const [user, setUser] = useState<User | null>()
   const [imageUser, setImageUser] = useState('')
 
- 
+  
   const [productsAddedToShoppingCart, setProductsAddedToShoppingCart] =
    useState<arrayProductsShoppingCartType>([{
     forwardPrice: '',
@@ -55,23 +63,8 @@ function Home() {
    const [imgPaymentPix, setImgPaymentPix] = useState<File>()
    const [message, setMessage] = useState<DataPaymentType>()
    const [refreshingPage, setRefreshingPage] = useState(false)
-
-   const [inputSearchValue, setInputSearchValue] = useState<arrayProducts>([{
-    forwardPrice:' ',
-    group:'',
-    pricePrevious: '',
-    spotPrice: '',
-    title: ''
-   }])
-   const [SearchValue, setSearchValue] = useState(['init'])
-
-   const [activeSearchProduct, setActiveSearchProduct] = useState(false)
-   const [showActiveSearchProduct, setShowActiveSearchProduct] = useState(false)
-
    const [serverOff, setServerOff] = useState('')
    
-   
-
 
   async function ShowProducts() {
     const products : arrayProducts | {message: string}= await FindProducts()
@@ -208,79 +201,13 @@ function Home() {
     }
   }
 
-  function handleInputSearchValue(event : string){
-    const eventsplit = event.split(' ')
-    
-    setShowActiveSearchProduct(false)
-    if(products){
-      setActiveSearchProduct(true)
-       products.map(product => {
-        const titlesplit = product.title.split(' ')
- 
-          eventsplit.map(eventText =>{
-            titlesplit.map(titleText => {
-              
-             const titlesplitlowercase = titleText.toLowerCase()
-             const eventsplitlowercase = eventText.toLowerCase()
-
-             const countString= eventsplitlowercase.length
-
-             if(countString > 3){
-
-              if(eventsplitlowercase === titlesplitlowercase){ 
-                setShowActiveSearchProduct(true)
-                if(inputSearchValue){
-
-                  const confirme = SearchValue.map(text => {    
-                    const arrayText = text.split(' ')
-                   
-                    const consult=  arrayText.map(text =>{
-                        if(text === titlesplitlowercase){
-                          return true
-                        }
-                      })
-                    const confirmConsult = consult.find(text => text === true)
-                    if(confirmConsult){
-                      return confirmConsult
-                    }else{
-                      false
-                    }
-                 }) 
-                 
-                 const confirmePosition = confirme.find(text => text === true)
-                 if(confirmePosition){             
-                  return
-                 }
-
-                 confirme.map(reset => false)
-
-                 setSearchValue([...SearchValue, product.title.toLowerCase()]) 
-
-                  setInputSearchValue([...inputSearchValue,{
-                    forwardPrice: product.forwardPrice,
-                    group: product.group,
-                    pricePrevious: product.pricePrevious,
-                    productId: product.productId,
-                    spotPrice: product.spotPrice,
-                    title: product.title,
-                    namePhoto: product.namePhoto,
-                    userLogged: product.userLogged
-                  }])                             
-              }     
-            }
-             }           
-          } )
-        })
-      })
-    }
+  /* Search */
+  const [query, setQuery] = useState('') 
+  const queryy= products
+  const search =  queryy.filter(value => value.title.toLowerCase().includes(query)) 
+  function handleSearch(event : ChangeEvent<HTMLInputElement>){
+    setQuery(event.target.value)
   }
-
-  function handleTimeCloseSearch(){
-    setTimeout(() => {
-    setActiveSearchProduct(false)
-    }, 3000);
-  }
-
 
   useEffect(()=>{
     ShowProducts()
@@ -298,7 +225,7 @@ function Home() {
        }}
        user={user}
        imageUser={imageUser}
-       search={(event: string)=> handleInputSearchValue(event)}
+       search={(event: ChangeEvent<HTMLInputElement>)=> handleSearch(event)}
        />
      )}
       <div className='home-container'>
@@ -306,15 +233,13 @@ function Home() {
                <div className='home-show-product-container'>
 
                {products ? (
-                      <>
-                       
-                        {activeSearchProduct && (
+                      <>    
+                        {query && (
                           <div className='home-show-product-group-container'>
                             <h2>Pesquisa:</h2>
                           <div className='home-show-product-group'>   
-                           {showActiveSearchProduct ? (
-                            inputSearchValue.map(inputSearchValue =>{      
-                              if(inputSearchValue.title !== ''){
+                           {search && (
+                            search.map(inputSearchValue =>{      
                                 return (
                                   <CardProducts 
                                   activateReload={()=> ''}
@@ -340,13 +265,8 @@ function Home() {
                                   }}
                                   />
                                 )
-                              }
+                              
                             })
-                           ): (
-                            <>
-                              {handleTimeCloseSearch()}
-                              <h2>Item não encontrado</h2>
-                            </>    
                            )}
                       
                           </div>
